@@ -10,5 +10,5 @@ In the project directory, you can run:
 
 ### `yarn build`
 
-Hosted on: https://hcmus-course-frontend.vercel.app/
-Github: https://github.com/congminh090800/hcmus-course-frontend
+Hosted on: https://hcmus-course-frontend.vercel.app/ <br/>
+Github: https://github.com/congminh090800/hcmus-course-frontend <br/>
