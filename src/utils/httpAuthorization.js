@@ -1,5 +1,6 @@
 import axios from "axios";
 import env from "~/constants/env";
+import { store } from "~/store";
 const http = axios.create({
   baseURL: env.apiUrl,
   timeout: 60000,
@@ -7,6 +8,10 @@ const http = axios.create({
 
 http.interceptors.request.use(
   function (config) {
+    const token = store.getState()?.auth?.accessToken;
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
     return config;
   },
   function (error) {

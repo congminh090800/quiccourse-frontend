@@ -1,0 +1,16 @@
+@use "../../../index";
+
+.hide-app-bar {
+  background-color: index.$primary-color !important;
+  color: #5f6368 !important;
+  border-bottom: 0.0625rem solid #e0e0e0;
+  .app-bar-title {
+    font-size: 1.3rem;
+    line-height: 1.7em;
+    .app-bar-logo {
+      display: inline-block;
+      height: 100%;
+      vertical-align: middle;
+    }
+  }
+}

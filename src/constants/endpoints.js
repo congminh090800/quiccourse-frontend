@@ -6,4 +6,7 @@ export default {
   createCourse: "/api/courses",
   getCourses: "/api/courses",
   getMyCourses: "/api/courses",
+  getMyInfo: "/api/user/me",
+  getUserInfo: (id) => `/api/user/${id}`,
+  participateCourse: (codeRoom) => `/api/courses/participate/${codeRoom}`,
 };

@@ -17,7 +17,6 @@ const persistConfig = {
   key: "root",
   storage,
 };
-
 const reducer = combineReducers({
   auth: authReducer,
 });

@@ -1,0 +1,29 @@
+.class-card-detail {
+  position: relative;
+  .class-card-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #ffffff;
+    width: 80%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .more-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 12px;
+    margin-right: 4px;
+  }
+  .class-card-actions {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    border-top: 0.0625rem solid #dadce0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}
