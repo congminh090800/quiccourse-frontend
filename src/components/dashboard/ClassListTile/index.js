@@ -15,6 +15,7 @@ import {
 } from "@mui/icons-material";
 import "./index.scss";
 import React, { useState } from "react";
+import { loadCover } from "~/constants/defaultCovers";
 const ClassListTile = (props) => {
   const [elevation, setElevation] = useState(0);
   function onCardHover() {
@@ -48,7 +49,7 @@ const ClassListTile = (props) => {
           className="class-card-image"
           component="img"
           height="100"
-          image={props.data.backgroundImg}
+          image={loadCover(Number(props.data.backgroundImg))}
           alt="class cover"
         ></CardMedia>
         <CardContent className="class-card-content">

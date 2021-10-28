@@ -14,7 +14,7 @@ import {
 } from "@material-ui/core";
 import { Menu, Add } from "@mui/icons-material";
 import { connect } from "react-redux";
-import Logo from "../../../../public/static/images/google_logo.svg";
+import Logo from "~/assets/images/google_logo.svg";
 import "./index.scss";
 import AvatarPopup from "./AvatarPopup";
 const HideOnScroll = (props) => {

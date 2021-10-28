@@ -17,7 +17,7 @@ import { Formik } from "formik";
 import endpoints from "~/constants/endpoints";
 import httpAuthorization from "~/utils/httpAuthorization";
 import { LoadingButton } from "@mui/lab";
-import { getRandomCover } from "~/constants/defaultCovers";
+import { getRandomCoverIndex } from "~/constants/defaultCovers";
 
 const initialValues = {
   name: "",
@@ -55,7 +55,7 @@ const CreateClassDialog = (props) => {
               try {
                 setError(null);
                 setCreating(true);
-                const backgroundImg = getRandomCover();
+                const backgroundImg = String(getRandomCoverIndex());
                 const result = await httpAuthorization.post(
                   endpoints.createCourse,
                   {
