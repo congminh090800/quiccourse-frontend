@@ -19,6 +19,5 @@ export const loadCover = (index) => {
       covers.push(require(`~/assets/images/covers/default/cover${i}.jpg`));
     }
   }
-  console.log(index);
   return covers[index % 9].default;
 };
