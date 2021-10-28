@@ -49,7 +49,12 @@ const ClassListTile = (props) => {
           className="class-card-image"
           component="img"
           height="100"
-          image={loadCover(Number(props.data.backgroundImg))}
+          image={
+            props.data.backgroundImg &&
+            String(props.data.backgroundImg).length > 2
+              ? props.data.backgroundImg
+              : loadCover(Number(props.data.backgroundImg))
+          }
           alt="class cover"
         ></CardMedia>
         <CardContent className="class-card-content">
