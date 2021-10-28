@@ -16,7 +16,12 @@ export const auth = createSlice({
     loading: false,
     user: {},
   },
-  reducers: {},
+  reducers: {
+    DELETE_ACCESS_TOKEN: (state) => {
+      state.accessToken = "";
+      state.user = {};
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(updateAccessToken.fulfilled, (state, { payload }) => {
       state.accessToken = payload.accessToken;
@@ -33,4 +38,7 @@ export const auth = createSlice({
     });
   },
 });
+
+export const { DELETE_ACCESS_TOKEN } = auth.actions;
+
 export default auth.reducer;

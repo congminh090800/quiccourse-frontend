@@ -6,8 +6,6 @@ import {
   Toolbar,
   useScrollTrigger,
   IconButton,
-  Avatar,
-  Tooltip,
   Popover,
   List,
   ListItem,
@@ -15,9 +13,10 @@ import {
   ListItemButton,
 } from "@material-ui/core";
 import { Menu, Add } from "@mui/icons-material";
-import * as stringUtils from "~/utils/stringUtils";
 import { connect } from "react-redux";
+import Logo from "../../../../public/assets/images/google_logo.svg";
 import "./index.scss";
+import AvatarPopup from "./AvatarPopup";
 const HideOnScroll = (props) => {
   const trigger = useScrollTrigger();
   const elevateTrigger = useScrollTrigger({
@@ -26,6 +25,9 @@ const HideOnScroll = (props) => {
   });
   const elevateChildren = React.cloneElement(props.children, {
     elevation: elevateTrigger ? 4 : 0,
+    sx: {
+      ...props.children.sx,
+    },
   });
   return (
     <Slide appear={false} direction="down" in={!trigger}>
@@ -35,7 +37,6 @@ const HideOnScroll = (props) => {
 };
 
 const AutoHideNavBar = (props) => {
-  const user = props.user;
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -45,11 +46,10 @@ const AutoHideNavBar = (props) => {
     setAnchorEl(null);
   };
   const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
   return (
     <React.Fragment>
       <HideOnScroll {...props}>
-        <AppBar className="hide-app-bar">
+        <AppBar sx={{ height: "64px" }} className="hide-app-bar">
           <Toolbar>
             <IconButton
               size="large"
@@ -64,11 +64,7 @@ const AutoHideNavBar = (props) => {
               component="div"
               sx={{ flexGrow: 1 }}
             >
-              <img
-                className="app-bar-logo"
-                src="https://www.gstatic.com/images/branding/googlelogo/svg/googlelogo_clr_74x24px.svg"
-                alt="Google"
-              />
+              <Logo className="app-bar-logo" alt="Google" />
               <span>&nbsp;Classroom</span>
             </Typography>
             <IconButton
@@ -80,7 +76,6 @@ const AutoHideNavBar = (props) => {
               <Add />
             </IconButton>
             <Popover
-              id={id}
               open={open}
               anchorEl={anchorEl}
               onClose={handleClose}
@@ -101,42 +96,17 @@ const AutoHideNavBar = (props) => {
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
-                  <ListItemButton onClick={() => alert("Clicking create")}>
+                  <ListItemButton onClick={() => props.openCreateDialog()}>
                     <ListItemText primary="Create class" />
                   </ListItemButton>
                 </ListItem>
               </List>
             </Popover>
-            <Tooltip
-              disableFocusListener
-              disableTouchListener
-              placement="bottom-end"
-              title={
-                <span
-                  style={{
-                    whiteSpace: "pre-line",
-                    fontSize: "14px",
-                    lineHeight: "22px",
-                  }}
-                >{`${user.name}\n${user.email}`}</span>
-              }
-            >
-              <IconButton>
-                <Avatar
-                  sx={{
-                    bgcolor: stringUtils.stringToColor("Minh Le"),
-                    width: 32,
-                    height: 32,
-                    fontSize: 16,
-                  }}
-                  src={user.avatar ? user.avatar : "not-exist"}
-                  alt={user.name}
-                ></Avatar>
-              </IconButton>
-            </Tooltip>
+            <AvatarPopup user={props.user} />
           </Toolbar>
         </AppBar>
       </HideOnScroll>
+      <Toolbar />
     </React.Fragment>
   );
 };

@@ -48,9 +48,7 @@ const ClassListTile = (props) => {
           className="class-card-image"
           component="img"
           height="100"
-          image={
-            props.data.backgroundImg ? props.data.backgroundImg : props.cover
-          }
+          image={props.data.backgroundImg}
           alt="class cover"
         ></CardMedia>
         <CardContent className="class-card-content">

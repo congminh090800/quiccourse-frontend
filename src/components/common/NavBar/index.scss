@@ -1,5 +1,20 @@
 @use "../../../index";
 
+%popup-btn {
+  border: 1px solid #dadce0 !important;
+  color: #3c4043 !important;
+  letter-spacing: 0.25px !important;
+  max-width: 254px !important;
+  outline: 0 !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  text-overflow: ellipsis !important;
+  overflow: hidden !important;
+  font: 500 12px/16px "Google Sans", "Roboto", "RobotoDraft", Helvetica, Arial,
+    sans-serif;
+  text-transform: none !important;
+}
+
 .hide-app-bar {
   background-color: index.$primary-color !important;
   color: #5f6368 !important;
@@ -13,4 +28,17 @@
       vertical-align: middle;
     }
   }
+}
+
+.manage-btn {
+  @extend %popup-btn;
+  border-radius: 100px !important;
+  padding: 8px 16px !important;
+  margin: 16px 0 0 !important;
+}
+
+.sign-out-btn {
+  @extend %popup-btn;
+  padding: 10px 24px !important;
+  margin: 16px !important;
 }
