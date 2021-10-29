@@ -16,6 +16,7 @@ import {
 import "./index.scss";
 import React, { useState } from "react";
 import { loadCover } from "~/constants/defaultCovers";
+import env from "~/constants/env";
 const ClassListTile = (props) => {
   const [elevation, setElevation] = useState(0);
   function onCardHover() {
@@ -52,7 +53,7 @@ const ClassListTile = (props) => {
           image={
             props.data.backgroundImg &&
             String(props.data.backgroundImg).length > 2
-              ? props.data.backgroundImg
+              ? `${env.apiUrl}${props.data.backgroundImg}`
               : loadCover(Number(props.data.backgroundImg))
           }
           alt="class cover"
