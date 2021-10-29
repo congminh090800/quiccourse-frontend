@@ -13,6 +13,7 @@ import {
   AssignmentIndOutlined,
   MoreVertOutlined,
 } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 import "./index.scss";
 import React, { useState } from "react";
 import { loadCover } from "~/constants/defaultCovers";
@@ -38,7 +39,7 @@ const ClassListTile = (props) => {
       }}
       elevation={elevation}
     >
-      <CardActionArea href="https://google.com">
+      <CardActionArea component={Link} to={`/classes/${props.data._id}`}>
         <IconButton
           aria-label="more"
           className="more-btn"
