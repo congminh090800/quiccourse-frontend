@@ -66,7 +66,7 @@ const AvatarPopup = (props) => {
         <IconButton onClick={handleClick}>
           <Avatar
             sx={{
-              bgcolor: stringUtils.stringToColor("Minh Le"),
+              bgcolor: stringUtils.stringToColor(user.name),
               width: 32,
               height: 32,
               fontSize: 16,
@@ -101,7 +101,7 @@ const AvatarPopup = (props) => {
             >
               <Avatar
                 sx={{
-                  bgcolor: stringUtils.stringToColor("Minh Le"),
+                  bgcolor: stringUtils.stringToColor(user.name),
                   width: 80,
                   height: 80,
                   fontSize: 40,

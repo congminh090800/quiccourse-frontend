@@ -6,6 +6,7 @@ import {
   Typography,
   IconButton,
   CardActionArea,
+  Avatar,
 } from "@material-ui/core";
 import {
   FolderOpen,
@@ -13,6 +14,8 @@ import {
   AssignmentIndOutlined,
   MoreVertOutlined,
 } from "@mui/icons-material";
+import { connect } from "react-redux";
+import * as stringUtils from "~/utils/stringUtils";
 import { Link } from "react-router-dom";
 import "./index.scss";
 import React, { useState } from "react";
@@ -47,6 +50,19 @@ const ClassListTile = (props) => {
         >
           <MoreVertOutlined />
         </IconButton>
+        {props.userId !== props.data.owner._id && (
+          <Avatar
+            className="avatar-in-tile"
+            sx={{
+              bgcolor: stringUtils.stringToColor(props.data.owner.name),
+              width: 75,
+              height: 75,
+              fontSize: 37,
+            }}
+            src={props.data.owner.avatar}
+            alt={props.data.owner.name}
+          ></Avatar>
+        )}
         <CardMedia
           className="class-card-image"
           component="img"
@@ -85,5 +101,9 @@ const ClassListTile = (props) => {
     </Card>
   );
 };
-
-export default ClassListTile;
+const mapState = (state) => {
+  return {
+    userId: state.auth.user._id,
+  };
+};
+export default connect(mapState)(ClassListTile);
