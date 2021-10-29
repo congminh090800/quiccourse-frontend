@@ -85,6 +85,12 @@ const ClassListTile = (props) => {
           <Typography noWrap variant="body2">
             {props.data.owner.name}
           </Typography>
+          <Typography
+            sx={{ color: "#000000", overflow: "visible", fontSize: 12, mt: 2 }}
+            component="div"
+          >
+            Class code: {props.data.code} | TODO: testing, will be removed later
+          </Typography>
         </CardContent>
       </CardActionArea>
       <CardActions className="class-card-actions">
