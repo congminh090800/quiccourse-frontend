@@ -70,7 +70,7 @@ const ClassListTile = (props) => {
           image={
             props.data.backgroundImg &&
             String(props.data.backgroundImg).length > 2
-              ? `${env.apiUrl}${props.data.backgroundImg}`
+              ? `${env.apiUrl}api/images/${props.data.backgroundImg}`
               : loadCover(Number(props.data.backgroundImg))
           }
           alt="class cover"
