@@ -34,7 +34,6 @@ const ClassListTile = (props) => {
   function handleLoad() {
     setLoaded(true);
   }
-  console.log("loaded", loaded);
   return (
     <Card
       onMouseOver={onCardHover}
