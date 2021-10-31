@@ -7,6 +7,7 @@ import {
   IconButton,
   CardActionArea,
   Avatar,
+  Skeleton,
 } from "@material-ui/core";
 import {
   FolderOpen,
@@ -23,12 +24,17 @@ import { loadCover } from "~/constants/defaultCovers";
 import env from "~/constants/env";
 const ClassListTile = (props) => {
   const [elevation, setElevation] = useState(0);
+  const [loaded, setLoaded] = useState(false);
   function onCardHover() {
     setElevation(8);
   }
   function onCardLeave() {
     setElevation(0);
   }
+  function handleLoad() {
+    setLoaded(true);
+  }
+  console.log("loaded", loaded);
   return (
     <Card
       onMouseOver={onCardHover}
@@ -67,6 +73,9 @@ const ClassListTile = (props) => {
           className="class-card-image"
           component="img"
           height="100"
+          sx={{
+            display: loaded ? "block" : "none",
+          }}
           image={
             props.data.backgroundImg &&
             String(props.data.backgroundImg).length > 2
@@ -74,7 +83,17 @@ const ClassListTile = (props) => {
               : loadCover(Number(props.data.backgroundImg))
           }
           alt="class cover"
+          onLoad={() => handleLoad()}
         ></CardMedia>
+        <Skeleton
+          sx={{
+            display: loaded ? "none" : "block",
+          }}
+          animation="wave"
+          variant="rectangular"
+          width={300}
+          height={100}
+        />
         <CardContent className="class-card-content">
           <Typography noWrap variant="h5" component="div">
             {props.data.name}
