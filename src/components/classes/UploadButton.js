@@ -40,7 +40,7 @@ export default function UploadButtons(props) {
       <label htmlFor="contained-button-file">
         <Input
           onChange={(evt) => handleUpload(evt)}
-          accept="image/png, image/gif, image/jpeg"
+          accept="image/png, image/gif, image/jpeg, image/gif"
           id="contained-button-file"
           type="file"
         />

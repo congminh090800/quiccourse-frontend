@@ -52,6 +52,11 @@ const ClassListTile = (props) => {
           aria-label="more"
           className="more-btn"
           sx={{ color: "#fff" }}
+          onClick={(event) => {
+            event.stopPropagation();
+            event.preventDefault();
+            console.log("More button click");
+          }}
         >
           <MoreVertOutlined />
         </IconButton>
