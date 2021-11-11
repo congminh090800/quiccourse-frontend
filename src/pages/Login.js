@@ -2,7 +2,6 @@ import LoginForm from "~/components/login/LoginForm";
 import { connect } from "react-redux";
 
 const Login = (props) => {
-  console.log(props.expired);
   return (
     <div>
       {props.expired && (
