@@ -10,4 +10,5 @@ export default {
   getUserInfo: (id) => `/api/user/${id}`,
   participateCourse: (codeRoom) => `/api/courses/participate/${codeRoom}`,
   uploadCover: "/api/upload/upload-cover",
+  refreshToken: "/api/refreshToken",
 };

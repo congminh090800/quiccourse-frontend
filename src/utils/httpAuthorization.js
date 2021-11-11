@@ -1,5 +1,8 @@
 import axios from "axios";
 import env from "~/constants/env";
+import endpoints from "~/constants/endpoints";
+import httpNormal from "./http";
+import { REFRESH_ACCESS_TOKEN } from "~/store/auth";
 import { store } from "~/store";
 const http = axios.create({
   baseURL: env.apiUrl,
@@ -28,11 +31,25 @@ http.interceptors.response.use(
     return response;
   },
   (error) => {
+    const authData = store.getState().auth;
     const err = (error.response && error.response.data) || error;
     if (error.response && error.response.status) {
       err.status = error.response.status;
     }
-
+    if (err.message === "TokenExpiredError") {
+      httpNormal
+        .post(endpoints.refreshToken, {
+          userId: authData?.user?._id,
+          refreshToken: authData?.refreshToken || authData?.user?.refreshToken,
+        })
+        .then(function (response) {
+          store.dispatch(REFRESH_ACCESS_TOKEN(response.data));
+          return http.request(error.config);
+        })
+        .catch(function (error) {
+          return Promise.reject(err);
+        });
+    }
     return Promise.reject(err);
   }
 );

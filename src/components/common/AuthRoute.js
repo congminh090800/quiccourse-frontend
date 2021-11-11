@@ -5,12 +5,14 @@ const AuthRoute = (props) => {
     props.isAuthenticated ? (
       props.children
     ) : (
-      <Redirect
-        to={{
-          pathname: "/login",
-          state: { lastPath: props.location.pathname },
-        }}
-      ></Redirect>
+      <>
+        <Redirect
+          to={{
+            pathname: "/login",
+            state: { lastPath: props.location.pathname },
+          }}
+        ></Redirect>
+      </>
     );
   return (
     <Route exact={props.exact} path={props.path}>
@@ -21,7 +23,7 @@ const AuthRoute = (props) => {
 
 const mapState = (state) => {
   return {
-    isAuthenticated: !!state.auth.accessToken,
+    isAuthenticated: !!state.auth.accessToken, // 10 second of delay in safe
   };
 };
 

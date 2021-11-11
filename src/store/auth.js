@@ -13,19 +13,29 @@ export const auth = createSlice({
   name: "auth",
   initialState: {
     accessToken: "",
+    refreshToken: "",
+    expiredAt: null,
     loading: false,
     user: {},
   },
   reducers: {
     DELETE_ACCESS_TOKEN: (state) => {
       state.accessToken = "";
+      state.refreshToken = "";
+      state.expiredAt = null;
       state.user = {};
+    },
+    REFRESH_ACCESS_TOKEN: (state, { payload }) => {
+      state.accessToken = payload;
+      state.user.accessToken = payload;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(updateAccessToken.fulfilled, (state, { payload }) => {
       state.accessToken = payload.accessToken;
       state.user = payload.user;
+      state.refreshToken = payload.refreshToken;
+      state.expiredAt = payload.expiredAt;
       state.loading = false;
     });
     builder.addCase(updateAccessToken.pending, (state, { payload }) => {
@@ -34,11 +44,13 @@ export const auth = createSlice({
     builder.addCase(updateAccessToken.rejected, (state, { payload }) => {
       state.accessToken = "";
       state.user = {};
+      state.refreshToken = "";
+      state.expiredAt = null;
       state.loading = false;
     });
   },
 });
 
-export const { DELETE_ACCESS_TOKEN } = auth.actions;
+export const { DELETE_ACCESS_TOKEN, REFRESH_ACCESS_TOKEN } = auth.actions;
 
 export default auth.reducer;
