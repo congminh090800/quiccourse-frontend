@@ -29,6 +29,11 @@ export const auth = createSlice({
       state.accessToken = payload;
       state.user.accessToken = payload;
     },
+    UPDATE_GOOGLE_ACCOUNT: (state, { payload }) => {
+      state.accessToken = payload.accessToken;
+      state.expiredAt = payload.expiredAt;
+      state.user = payload.user;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(updateAccessToken.fulfilled, (state, { payload }) => {
@@ -51,6 +56,10 @@ export const auth = createSlice({
   },
 });
 
-export const { DELETE_ACCESS_TOKEN, REFRESH_ACCESS_TOKEN } = auth.actions;
+export const {
+  DELETE_ACCESS_TOKEN,
+  REFRESH_ACCESS_TOKEN,
+  UPDATE_GOOGLE_ACCOUNT,
+} = auth.actions;
 
 export default auth.reducer;

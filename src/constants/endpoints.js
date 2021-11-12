@@ -11,4 +11,5 @@ export default {
   participateCourse: (codeRoom) => `/api/courses/participate/${codeRoom}`,
   uploadCover: "/api/upload/upload-cover",
   refreshToken: "/api/refreshToken",
+  googleSignIn: "/api/google-signin",
 };

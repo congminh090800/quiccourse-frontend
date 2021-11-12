@@ -12,9 +12,12 @@ const http = axios.create({
 http.interceptors.request.use(
   function (config) {
     const token = store.getState()?.auth?.accessToken;
+    const tokenType =
+      store.getState()?.auth?.user?.authenticationType || "native";
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }
+    config.headers["access-token-type"] = tokenType;
     return config;
   },
   function (error) {
