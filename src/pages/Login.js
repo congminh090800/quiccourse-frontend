@@ -8,9 +8,12 @@ import { useDispatch } from "react-redux";
 import { UPDATE_GOOGLE_ACCOUNT } from "~/store/auth";
 import { useHistory } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 import env from "~/constants/env";
 const Login = (props) => {
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const onFailure = (response) => {
     setError("Google login failed");
@@ -18,6 +21,7 @@ const Login = (props) => {
   let history = useHistory();
   let location = useLocation();
   const onGoogleResponse = async (response) => {
+    setLoading(true);
     try {
       const result = await http.post(endpoints.googleSignIn, {
         tokenId: response.tokenId,
@@ -35,25 +39,36 @@ const Login = (props) => {
     } catch (err) {
       console.log(err);
       setError(err);
+    } finally {
+      setLoading(false);
     }
   };
   return (
     <div>
-      {props.expired && (
-        <div style={{ color: "red" }}>session expired, login again!</div>
+      {!loading ? (
+        <>
+          {" "}
+          {props.expired && (
+            <div style={{ color: "red" }}>session expired, login again!</div>
+          )}
+          {error && <div style={{ color: "red" }}>{error}</div>}
+          <LoginForm />
+          <GoogleLogin
+            clientId={env.googleClientId}
+            buttonText="Login"
+            onSuccess={async (res) => {
+              await onGoogleResponse(res);
+            }}
+            onFailure={onFailure}
+            cookiePolicy={"single_host_origin"}
+            prompt="select_account"
+          />
+        </>
+      ) : (
+        <Box sx={{ display: "flex" }}>
+          <CircularProgress />
+        </Box>
       )}
-      {error && <div style={{ color: "red" }}>{error}</div>}
-      <LoginForm />
-      <GoogleLogin
-        clientId={env.googleClientId}
-        buttonText="Login"
-        onSuccess={async (res) => {
-          await onGoogleResponse(res);
-        }}
-        onFailure={onFailure}
-        cookiePolicy={"single_host_origin"}
-        prompt="select_account"
-      />
     </div>
   );
 };
