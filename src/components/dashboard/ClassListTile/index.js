@@ -69,7 +69,7 @@ const ClassListTile = (props) => {
               height: 75,
               fontSize: 37,
             }}
-            src={props.data.owner.avatar}
+            src={stringUtils.imageUrlFormatter(props.data.owner.avatar)}
             alt={props.data.owner.name}
           ></Avatar>
         )}
