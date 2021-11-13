@@ -57,22 +57,28 @@ const LoginForm = (props) => {
       history.push(lastPath);
     } catch (err) {
       console.log(err);
+      if (err.message) {
+        setError(err);
+      } else {
+        setError({ message: "Unexpected error!" });
+      }
       setGoogleLoading(false);
     }
   };
   const onFailure = (response) => {
     console.log(response);
+    setError({ message: response.error });
   };
   return (
     <div className="login-form">
+      <div className="login-hint">
+        <div>Hint: use these accounts:</div>
+        <div>Admin role: tester1@gmail.com / Design023</div>
+        <div>Casual: tester2@gmail.com / Design023</div>
+      </div>
+      {error && <div style={{ color: "red" }}>{error.message}</div>}
       {!googleLoading ? (
         <>
-          <div className="login-hint">
-            <div>Hint: use these accounts:</div>
-            <div>Admin role: tester1@gmail.com / Design023</div>
-            <div>Casual: tester2@gmail.com / Design023</div>
-          </div>
-          {error && <div style={{ color: "red" }}>{error.message}</div>}
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
