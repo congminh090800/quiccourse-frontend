@@ -3,6 +3,8 @@ import Dashboard from "~/pages/Dashboard";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import AuthRoute from "~/components/common/AuthRoute";
 import UploadButtons from "./components/classes/UploadButton";
+import ClassPage from "./pages/Class";
+import ClassMemberPage from "./pages/Class/member";
 function App() {
   return (
     <Router>
@@ -11,8 +13,11 @@ function App() {
           <AuthRoute exact path={["/", "/classes"]}>
             <Dashboard />
           </AuthRoute>
-          <AuthRoute path="/classes/:id">
-            <UploadButtons title="Upload Image" />
+          <AuthRoute path="/classes/:code" exact>
+            <ClassPage />
+          </AuthRoute>
+          <AuthRoute path="/classes/:code/member">
+            <ClassMemberPage />
           </AuthRoute>
           <Route path="/login">
             <Login />

@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./auth";
+import classesReducer from "./class";
 import storage from "redux-persist/lib/storage";
 import { combineReducers } from "redux";
 import {
@@ -19,6 +20,7 @@ const persistConfig = {
 };
 const reducer = combineReducers({
   auth: authReducer,
+  classes: classesReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);

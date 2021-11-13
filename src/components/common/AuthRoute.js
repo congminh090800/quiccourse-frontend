@@ -21,7 +21,7 @@ const AuthRoute = (props) => {
 
 const mapState = (state) => {
   return {
-    isAuthenticated: !!state.auth.accessToken,
+    isAuthenticated: !!state?.auth?.accessToken,
   };
 };
 
