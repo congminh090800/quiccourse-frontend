@@ -8,7 +8,6 @@ export const updateAccessToken = createAsyncThunk(
     return result.data;
   }
 );
-
 export const auth = createSlice({
   name: "auth",
   initialState: {
