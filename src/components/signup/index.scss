@@ -1,0 +1,17 @@
+.sign-up-form {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  .sign-up-form-inner {
+    width: 280px;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    .sign-up-form-input {
+      margin-top: 20px;
+    }
+    .sign-up-btn {
+      float: right;
+    }
+  }
+}

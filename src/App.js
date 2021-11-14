@@ -5,6 +5,7 @@ import AuthRoute from "~/components/common/AuthRoute";
 import UploadButtons from "./components/classes/UploadButton";
 import ClassPage from "./pages/Class";
 import ClassMemberPage from "./pages/Class/member";
+import SignUp from "~/pages/SignUp";
 function App() {
   return (
     <Router>
@@ -21,6 +22,9 @@ function App() {
           </AuthRoute>
           <Route path="/login">
             <Login />
+          </Route>
+          <Route path="/signup">
+            <SignUp />
           </Route>
         </Switch>
       </div>

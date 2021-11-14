@@ -17,7 +17,7 @@ import "./index.scss";
 import { useDispatch } from "react-redux";
 import { DELETE_ACCESS_TOKEN } from "~/store/auth";
 import { useHistory } from "react-router-dom";
-
+import { imageUrlFormatter } from "~/utils/stringUtils";
 const SmallBadge = styled(CameraAltOutlined)(({ theme }) => ({
   width: 20,
   height: 20,
@@ -71,7 +71,7 @@ const AvatarPopup = (props) => {
               height: 32,
               fontSize: 16,
             }}
-            src={user.avatar ? user.avatar : "not-exist"}
+            src={user.avatar ? imageUrlFormatter(user.avatar) : "not-exist"}
             alt={user.name}
           ></Avatar>
         </IconButton>
@@ -106,7 +106,7 @@ const AvatarPopup = (props) => {
                   height: 80,
                   fontSize: 40,
                 }}
-                src={user.avatar ? user.avatar : "not-exist"}
+                src={user.avatar ? imageUrlFormatter(user.avatar) : "not-exist"}
                 alt={user.name}
               ></Avatar>
             </Badge>

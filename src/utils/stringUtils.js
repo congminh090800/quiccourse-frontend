@@ -1,3 +1,4 @@
+import env from "~/constants/env";
 function stringToColor(string) {
   let hash = 0;
   let i;
@@ -18,4 +19,12 @@ function stringToColor(string) {
   return color;
 }
 
-export { stringToColor };
+function imageUrlFormatter(url) {
+  if (url.startsWith("http")) {
+    return url;
+  } else {
+    return `${env.apiUrl}api/images/${url}`;
+  }
+}
+
+export { stringToColor, imageUrlFormatter };
