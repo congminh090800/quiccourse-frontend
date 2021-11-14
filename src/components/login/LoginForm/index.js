@@ -179,7 +179,7 @@ const LoginForm = (props) => {
 
 const mapState = (state) => {
   return {
-    accessToken: state.auth.accessToken,
+    accessToken: state?.auth?.accessToken,
     loading: state.auth.loading,
   };
 };

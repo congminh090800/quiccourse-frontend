@@ -10,6 +10,31 @@ code {
     monospace;
 }
 
+.df {
+  display: flex;
+}
+.fdc {
+  flex-direction: column;
+}
+.aic {
+  align-items: center;
+}
+.jcc {
+  justify-content: center;
+}
+.jcsb {
+  justify-content: space-between;
+}
+.sb {
+  font-weight: 600;
+}
+.pr {
+  position: relative;
+}
+.pa {
+  position: absolute;
+}
+
 $primary-color: #ffffff;
 $secondary-color: #3c4043;
 $trans-dark: rgba(0, 0, 0, 0.549);
