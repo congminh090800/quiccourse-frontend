@@ -2,7 +2,7 @@ import React from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import * as message from "~/utils/validateRuleMessages";
-import { TextField } from "@material-ui/core";
+import { TextField, Button, Typography } from "@material-ui/core";
 import { LoadingButton } from "@mui/lab";
 import { connect, useDispatch } from "react-redux";
 import { updateAccessToken } from "~/store/auth";
@@ -76,6 +76,9 @@ const LoginForm = (props) => {
         <div>Admin role: tester1@gmail.com / Design023</div>
         <div>Casual: tester2@gmail.com / Design023</div>
       </div>
+      <Typography variant="h6" component="div">
+        Login
+      </Typography>
       {error && <div style={{ color: "red" }}>{error.message}</div>}
       {!googleLoading ? (
         <>
@@ -140,6 +143,15 @@ const LoginForm = (props) => {
                   >
                     Login
                   </LoadingButton>
+                  <Button
+                    sx={{ marginRight: 2 }}
+                    color="primary"
+                    className="login-btn"
+                    variant="outlined"
+                    onClick={() => history.push("/signup")}
+                  >
+                    Sign up
+                  </Button>
                 </div>
               </form>
             )}

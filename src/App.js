@@ -3,6 +3,7 @@ import Dashboard from "~/pages/Dashboard";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import AuthRoute from "~/components/common/AuthRoute";
 import UploadButtons from "./components/classes/UploadButton";
+import SignUp from "~/pages/SignUp";
 function App() {
   return (
     <Router>
@@ -16,6 +17,9 @@ function App() {
           </AuthRoute>
           <Route path="/login">
             <Login />
+          </Route>
+          <Route path="/signup">
+            <SignUp />
           </Route>
         </Switch>
       </div>

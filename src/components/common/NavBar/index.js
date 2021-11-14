@@ -17,6 +17,7 @@ import { connect } from "react-redux";
 import Logo from "~/assets/images/google_logo.svg";
 import "./index.scss";
 import AvatarPopup from "./AvatarPopup";
+import { useHistory } from "react-router-dom";
 const HideOnScroll = (props) => {
   const trigger = useScrollTrigger();
   const elevateTrigger = useScrollTrigger({
@@ -38,6 +39,7 @@ const HideOnScroll = (props) => {
 
 const AutoHideNavBar = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const history = useHistory();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -60,9 +62,10 @@ const AutoHideNavBar = (props) => {
               <Menu />
             </IconButton>
             <Typography
+              onClick={() => history.push("/")}
               className="app-bar-title"
               component="div"
-              sx={{ flexGrow: 1 }}
+              sx={{ flexGrow: 1, cursor: "pointer" }}
             >
               <Logo className="app-bar-logo" alt="Google" />
               <span>&nbsp;Classroom</span>

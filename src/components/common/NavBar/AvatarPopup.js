@@ -18,7 +18,6 @@ import { useDispatch } from "react-redux";
 import { DELETE_ACCESS_TOKEN } from "~/store/auth";
 import { useHistory } from "react-router-dom";
 import { imageUrlFormatter } from "~/utils/stringUtils";
-import env from "~/constants/env";
 const SmallBadge = styled(CameraAltOutlined)(({ theme }) => ({
   width: 20,
   height: 20,
@@ -48,7 +47,6 @@ const AvatarPopup = (props) => {
   };
   const open = Boolean(anchorEl);
   const user = props.user;
-  console.log(user);
   return (
     <>
       <Tooltip
