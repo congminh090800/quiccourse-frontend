@@ -47,7 +47,7 @@ const ClassListTile = (props) => {
       }}
       elevation={elevation}
     >
-      <CardActionArea component={Link} to={`/classes/${props.data.code}`}>
+      <CardActionArea component={Link} to={`/classes/${props.data?.code}`}>
         <IconButton
           aria-label="more"
           className="more-btn"

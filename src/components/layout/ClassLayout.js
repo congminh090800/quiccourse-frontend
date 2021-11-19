@@ -9,10 +9,6 @@ import { ClassesAction } from "../../store/class";
 import endpoints from "../../constants/endpoints";
 
 const ClassLayout = ({ children, maxWidth, style }) => {
-  console.log(
-    "🚀 ~ file: ClassLayout.js ~ line 12 ~ ClassLayout ~ maxWidth",
-    maxWidth
-  );
   const [loading, setLoading] = useState(false);
   const { info } = useSelector((state) => state.classes);
   const { code } = useParams();
@@ -25,7 +21,7 @@ const ClassLayout = ({ children, maxWidth, style }) => {
       dispatch(ClassesAction.setClassInfo(result.data));
       setLoading(false);
     };
-    if (code !== info.code || !info) fetchClassData();
+    if (code !== info?.code || !info) fetchClassData();
   }, [code]);
   return (
     <div

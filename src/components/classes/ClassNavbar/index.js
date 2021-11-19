@@ -52,7 +52,7 @@ const ClassNavbar = () => {
               <Button
                 className="nav-button"
                 component={Link}
-                to={`/classes/${info.code}`}
+                to={`/classes/${info?.code}`}
               >
                 Stream
               </Button>
@@ -64,7 +64,7 @@ const ClassNavbar = () => {
               <Button
                 className="nav-button"
                 component={Link}
-                to={`/classes/${info.code}/member`}
+                to={`/classes/${info?.code}/member`}
               >
                 People
               </Button>
