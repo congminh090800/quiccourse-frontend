@@ -14,4 +14,5 @@ export default {
   refreshToken: "/api/refreshToken",
   googleSignIn: "/api/google-signin",
   uploadAvatar: "/api/upload/upload-avatar",
+  sendStudent: "api/courses/invite/email/send",
 };
