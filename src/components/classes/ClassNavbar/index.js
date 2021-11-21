@@ -8,7 +8,7 @@ import {
 import { Box } from "@material-ui/system";
 import { Menu } from "@mui/icons-material";
 import React from "react";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import Logo from "~/assets/images/google_logo.svg";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -19,6 +19,12 @@ const ClassNavbar = () => {
   const { user } = useSelector((state) => state.auth);
   const { info } = useSelector((state) => state.classes);
   const history = useHistory();
+  const location = useLocation();
+  console.log(
+    "🚀 ~ file: index.js ~ line 23 ~ ClassNavbar ~ location",
+    location.pathname.split("/").pop() == info.code
+  );
+
   return (
     <Box>
       <AppBar sx={{ height: "64px" }} className="hide-app-bar">
@@ -51,7 +57,11 @@ const ClassNavbar = () => {
           >
             <Box>
               <Button
-                className="nav-button"
+                className={`nav-button ${
+                  location.pathname.split("/").pop() == info.code
+                    ? "active"
+                    : ""
+                }`}
                 component={Link}
                 to={`/classes/${info?.code}`}
               >
@@ -59,11 +69,13 @@ const ClassNavbar = () => {
               </Button>
             </Box>
             <Box>
-              <Button className="nav-button">Classword</Button>
+              <Button className="nav-button">Classwork</Button>
             </Box>
             <Box>
               <Button
-                className="nav-button"
+                className={`nav-button ${
+                  location.pathname.split("/").pop() == "member" ? "active" : ""
+                }`}
                 component={Link}
                 to={`/classes/${info?.code}/member`}
               >

@@ -88,10 +88,13 @@ const InviteMemberDialog = ({ open, handleClose, variant }) => {
   const Invite = async () => {
     try {
       setLoading(true);
-      const result = await httpAuthorization.post(endpoints.sendStudent, {
-        emails: emails,
-        courseId: info._id,
-      });
+      await httpAuthorization.post(
+        variant === "student" ? endpoints.sendStudent : endpoints.sendTeacher,
+        {
+          emails: emails,
+          courseId: info._id,
+        }
+      );
       dispatch(GlobalActions.setSnackbarSuccess("Invite Sent!"));
       setLoading(false);
       handleClose();
@@ -168,7 +171,7 @@ const InviteMemberDialog = ({ open, handleClose, variant }) => {
           {emails.map((item) => {
             return (
               <InviteItem
-                key={item.email}
+                key={item}
                 data={item}
                 onClick={() => {
                   setEmails([...emails].filter((data) => data !== item));
@@ -218,10 +221,30 @@ const ClassMemberPage = () => {
   const isOwner = info.owner._id === user._id;
   return (
     <ClassLayout maxWidth={"md"} style={{ width: 808 }}>
-      <Box px={2} pt={2} pb={1} style={{ borderBottom: "1px solid #1967d2" }}>
+      <Box
+        className="df jcsb"
+        px={2}
+        pt={2}
+        pb={1}
+        style={{ borderBottom: "1px solid #1967d2" }}
+      >
         <Typography style={{ color: "#1967d2", fontSize: "2rem" }}>
           Teachers
         </Typography>
+        <Box className="df aic">
+          {isOwner && (
+            <IconButton
+              onClick={() => {
+                setDialogVariant("teacher");
+              }}
+            >
+              <AddCircle style={{ color: "#1967d2" }} />
+            </IconButton>
+          )}
+          <Typography style={{ color: "#1967d2", fontSize: "1rem" }}>
+            {[info.owner, ...info.participants].length} teachers
+          </Typography>
+        </Box>
       </Box>
       {[info.owner, ...info.teachers].map((user) => {
         return <MemberItem key={user.id} user={user} />;

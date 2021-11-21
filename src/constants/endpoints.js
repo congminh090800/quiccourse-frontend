@@ -14,4 +14,6 @@ export default {
   refreshToken: "/api/refreshToken",
   googleSignIn: "/api/google-signin",
   sendStudent: "api/courses/invite/email/send",
+  sendTeacher: "/api/courses/invite/email/send-teachers",
+  studentAccept: (code) => `/api/courses/invite/${code}`,
 };

@@ -28,7 +28,7 @@ function App() {
           <AuthRoute path="/classes/:code/member">
             <ClassMemberPage />
           </AuthRoute>
-          <AuthRoute path="/courses/participate/:code" exact>
+          <AuthRoute path="/courses/participate/:code">
             <ParticipatingCoursePage />
           </AuthRoute>
           <Route path="/login">
