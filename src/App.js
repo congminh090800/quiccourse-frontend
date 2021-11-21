@@ -6,6 +6,7 @@ import UploadButtons from "./components/classes/UploadButton";
 import ClassPage from "./pages/Class";
 import ClassMemberPage from "./pages/Class/member";
 import SignUp from "~/pages/SignUp";
+import Profile from "./pages/Profile";
 import { useDispatch, useSelector } from "react-redux";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
@@ -27,6 +28,9 @@ function App() {
           </AuthRoute>
           <AuthRoute path="/classes/:code/member">
             <ClassMemberPage />
+          </AuthRoute>
+          <AuthRoute path="/profile">
+            <Profile />
           </AuthRoute>
           <AuthRoute path="/courses/participate/:code" exact>
             <ParticipatingCoursePage />
