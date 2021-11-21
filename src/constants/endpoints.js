@@ -13,4 +13,5 @@ export default {
   getClassInfo: (code) => `/api/courses/me/${code}`,
   refreshToken: "/api/refreshToken",
   googleSignIn: "/api/google-signin",
+  sendStudent: "api/courses/invite/email/send",
 };

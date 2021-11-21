@@ -1,27 +1,17 @@
-import {
-  LinearProgress,
-  Typography,
-  IconButton,
-  Card,
-  Avatar,
-} from "@material-ui/core";
+import { Typography, IconButton, Paper } from "@material-ui/core";
 import { Box } from "@material-ui/system";
 import { ErrorOutline } from "@mui/icons-material";
 import React, { useState } from "react";
-import AutoHideNavBar from "~/components/common/NavBar";
-import ClassNavbar from "../../components/classes/ClassNavbar";
-import httpAuthorization from "~/utils/httpAuthorization";
-import { useParams } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { loadCover } from "~/constants/defaultCovers";
-import { ClassesAction } from "../../store/class";
 import ClassLayout from "../../components/layout/ClassLayout";
 import env from "~/constants/env";
 
 const ClassInfo = () => {
   const { info } = useSelector((state) => state.classes);
+  const [showDetail, setShowDetail] = useState(false);
   return (
-    <Box style={{ width: "100%" }} className="pr">
+    <Box className="df fdc" style={{ width: "100%" }} className="pr">
       <img
         alt="class-logo"
         src={
@@ -32,8 +22,14 @@ const ClassInfo = () => {
         style={{
           height: 240,
           objectFit: "cover",
-          borderRadius: 8,
+          borderTopLeftRadius: 8,
+          borderTopRightRadius: 8,
+          borderBottomLeftRadius: showDetail ? 0 : 8,
+          borderBottomRightRadius: showDetail ? 0 : 8,
           width: "100%",
+          boxShadow: showDetail
+            ? "0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%)"
+            : "none",
         }}
       />
       <Box
@@ -56,10 +52,33 @@ const ClassInfo = () => {
             color: "#fff",
             height: 36,
           }}
+          onClick={() => setShowDetail((prev) => !prev)}
         >
           <ErrorOutline />
         </IconButton>
       </Box>
+      {showDetail && (
+        <Paper
+          className="df fdc"
+          style={{
+            position: "absolute",
+            padding: 16,
+            width: "calc(100% - 32px)",
+            marginTop: -4,
+          }}
+          elevation={4}
+        >
+          <Typography className="sb">
+            Class code : <Typography component="span">{info?.code}</Typography>
+          </Typography>
+          <Typography className="sb">
+            Subject : <Typography component="span">{info?.subject}</Typography>
+          </Typography>
+          <Typography className="sb">
+            Room : <Typography component="span">{info?.room}</Typography>
+          </Typography>
+        </Paper>
+      )}
     </Box>
   );
 };
