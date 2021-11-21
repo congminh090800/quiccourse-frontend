@@ -5,10 +5,16 @@ import NavBar from '../../components/common/NavBar';
 import { Card, CardContent, Typography } from '@material-ui/core';
 import FieldData from '../../components/profile/FieldData';
 import ChangeAvatarDialog from '../../components/profile/ChangeAvatarDialog';
+import { Snackbar, Alert } from '@mui/material';
+
+// const Alert = React.forwardRef(function Alert(props, ref) {
+//     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+// });
 
 const Profile = () => {
     const user = useSelector(state => state.auth.user);
     const [showChangeAvatarDialog, setShowChangeAvatarDialog] = useState(false);
+    const [message, setMessage] = useState(null);
 
     const handleOpenChangeAvatarDialog = () => {
         setShowChangeAvatarDialog(true);
@@ -17,6 +23,10 @@ const Profile = () => {
     const handleChangeAvatarDialogClose = () => {
         setShowChangeAvatarDialog(false);
     };
+
+    const handleOnCloseSnackbar = (event, reason) => {
+        setMessage(null);
+    }
 
     return (
         <div className="profile">
@@ -52,7 +62,12 @@ const Profile = () => {
                     </Card>
                 </div>
             </div>
-            <ChangeAvatarDialog open={showChangeAvatarDialog} onClose={handleChangeAvatarDialogClose} user={user} />
+            <ChangeAvatarDialog open={showChangeAvatarDialog} onClose={handleChangeAvatarDialogClose} user={user} setMessage={setMessage} />
+            <Snackbar open={message !== null} autoHideDuration={2000} onClose={handleOnCloseSnackbar}>
+                <Alert onClose={handleOnCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+                    {message}
+                </Alert>
+            </Snackbar>
         </div>
     );
 }
