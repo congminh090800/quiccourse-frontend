@@ -45,6 +45,11 @@ const AvatarPopup = (props) => {
     dispatch(DELETE_ACCESS_TOKEN());
     history.push("/login");
   };
+
+  const handleProfile = () => {
+    history.push("/profile");
+  }
+
   const open = Boolean(anchorEl);
   const user = props.user;
   return (
@@ -138,6 +143,7 @@ const AvatarPopup = (props) => {
                 variant="outlined"
                 disableElevation
                 className="manage-btn"
+                onClick={handleProfile}
               >
                 Manage your account
               </Button>
