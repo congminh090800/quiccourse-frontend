@@ -112,7 +112,8 @@ const ClassListTile = (props) => {
             sx={{ color: "#000000", overflow: "visible", fontSize: 12, mt: 2 }}
             component="div"
           >
-            Class code: {props.data.code} | TODO: testing, will be removed later
+            Class code: {props.data?.code} | TODO: testing, will be removed
+            later
           </Typography>
         </CardContent>
       </CardActionArea>

@@ -20,10 +20,6 @@ const ClassNavbar = () => {
   const { info } = useSelector((state) => state.classes);
   const history = useHistory();
   const location = useLocation();
-  console.log(
-    "🚀 ~ file: index.js ~ line 23 ~ ClassNavbar ~ location",
-    location.pathname.split("/").pop() == info.code
-  );
 
   return (
     <Box>
@@ -58,7 +54,7 @@ const ClassNavbar = () => {
             <Box>
               <Button
                 className={`nav-button ${
-                  location.pathname.split("/").pop() == info.code
+                  location.pathname.split("/").pop() == info?.code
                     ? "active"
                     : ""
                 }`}
