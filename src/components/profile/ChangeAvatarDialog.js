@@ -4,8 +4,12 @@ import { PhotoCamera } from '@mui/icons-material';
 import React, { useState, useEffect } from 'react';
 import endpoints from "~/constants/endpoints";
 import httpAuthorization from "~/utils/httpAuthorization";
+import { useDispatch } from "react-redux";
+import { UPDATE_USER_AVATAR } from "~/store/auth";
+
 
 const ChangeAvatarDialog = (props) => {
+    const dispatch = useDispatch();
     const [avatar, setAvatar] = useState(props.avatar);
     const [selectedFile, setSelectedFile] = useState(null);
     const [error, setError] = useState(null);
@@ -33,6 +37,9 @@ const ChangeAvatarDialog = (props) => {
             const result = await httpAuthorization.patch(endpoints.uploadAvatar, formData);
             if (result) {
                 setLoading(false);
+                const imagePath = result.data.imagePath;
+                const imageId = imagePath.split('/')[2];
+                dispatch(UPDATE_USER_AVATAR(imageId));
                 props.setMessage('Avatar changed successfully');
                 props.onClose();
             } else {
