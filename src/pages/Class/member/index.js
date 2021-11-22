@@ -242,7 +242,7 @@ const ClassMemberPage = () => {
             </IconButton>
           )}
           <Typography style={{ color: "#1967d2", fontSize: "1rem" }}>
-            {[info.owner, ...info.participants].length} teachers
+            {[info.owner, ...info.teachers].length} teachers
           </Typography>
         </Box>
       </Box>

@@ -25,7 +25,7 @@ const ParticipatingCoursePage = () => {
     <div style={{ width: "100vw", height: "100vh" }} className="df aic fdc jcc">
       <CircularProgress />
       <Typography style={{ marginTop: 16 }}>
-        {loading ? "Đang xử lý yêu cầu..." : "Đang điều hướng...."}
+        {loading ? "Processing..." : "Redirecting...."}
       </Typography>
       <Typography style={{ marginTop: 16, color: "#red" }}>{error}</Typography>
       {!loading && <Redirect to={`/classes/${code}`} />}
