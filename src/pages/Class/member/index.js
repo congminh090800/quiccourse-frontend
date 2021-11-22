@@ -237,79 +237,88 @@ const ClassMemberPage = () => {
   const isOwner = info.owner._id === user._id;
   return (
     <ClassLayout maxWidth={"md"} style={{ width: 808 }}>
-      <Box
-        className="df jcsb"
-        style={{ borderBottom: "1px solid #1967d2", marginBottom: "20px" }}
-      >
-        <Typography style={{ color: "#1967d2", fontSize: "2rem" }}>
-          Student Identification
-        </Typography>
-      </Box>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={(values) => {
-          setRequesting(true);
-          values = {
-            ...values,
-            classId: info._id,
-            userId: user._id,
-          };
-          window.alert(JSON.stringify(values));
-          setRequesting(false);
-        }}
-      >
-        {(formik) => (
-          <form
-            className="student-id-mapping-form"
-            onSubmit={formik.handleSubmit}
+      {info.participants.some(
+        (participant) => participant._id === user._id
+      ) && (
+        <>
+          <Box
+            className="df jcsb"
+            style={{ borderBottom: "1px solid #1967d2", marginBottom: "20px" }}
           >
-            <div>
-              <TextField
-                sx={{ marginBottom: "10px" }}
-                id="studentId"
-                name="studentId"
-                label="Student Id"
-                value={formik.values.studentId}
-                onChange={formik.handleChange}
-                error={
-                  formik.touched.studentId && Boolean(formik.errors.studentId)
-                }
-                helperText={formik.touched.studentId && formik.errors.studentId}
-                variant="outlined"
-                onBlur={formik.handleBlur}
-                fullWidth
-              />
-            </div>
-            <div>
-              <TextField
-                sx={{ marginBottom: "10px" }}
-                id="note"
-                name="note"
-                label="Note"
-                value={formik.values.note}
-                onChange={formik.handleChange}
-                error={formik.touched.note && Boolean(formik.errors.note)}
-                helperText={formik.touched.note && formik.errors.note}
-                variant="outlined"
-                onBlur={formik.handleBlur}
-                fullWidth
-                multiline
-                rows={4}
-              />
-            </div>
-            <LoadingButton
-              loading={requesting}
-              color="primary"
-              variant="contained"
-              type="submit"
-              fullWidth
-            >
-              Send request
-            </LoadingButton>
-          </form>
-        )}
-      </Formik>
+            <Typography style={{ color: "#1967d2", fontSize: "2rem" }}>
+              Student Identification
+            </Typography>
+          </Box>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={(values) => {
+              setRequesting(true);
+              values = {
+                ...values,
+                classId: info._id,
+                userId: user._id,
+              };
+              window.alert(JSON.stringify(values));
+              setRequesting(false);
+            }}
+          >
+            {(formik) => (
+              <form
+                className="student-id-mapping-form"
+                onSubmit={formik.handleSubmit}
+              >
+                <div>
+                  <TextField
+                    sx={{ marginBottom: "10px" }}
+                    id="studentId"
+                    name="studentId"
+                    label="Student Id"
+                    value={formik.values.studentId}
+                    onChange={formik.handleChange}
+                    error={
+                      formik.touched.studentId &&
+                      Boolean(formik.errors.studentId)
+                    }
+                    helperText={
+                      formik.touched.studentId && formik.errors.studentId
+                    }
+                    variant="outlined"
+                    onBlur={formik.handleBlur}
+                    fullWidth
+                  />
+                </div>
+                <div>
+                  <TextField
+                    sx={{ marginBottom: "10px" }}
+                    id="note"
+                    name="note"
+                    label="Note"
+                    value={formik.values.note}
+                    onChange={formik.handleChange}
+                    error={formik.touched.note && Boolean(formik.errors.note)}
+                    helperText={formik.touched.note && formik.errors.note}
+                    variant="outlined"
+                    onBlur={formik.handleBlur}
+                    fullWidth
+                    multiline
+                    rows={4}
+                  />
+                </div>
+                <LoadingButton
+                  loading={requesting}
+                  color="primary"
+                  variant="contained"
+                  type="submit"
+                  fullWidth
+                >
+                  Send request
+                </LoadingButton>
+              </form>
+            )}
+          </Formik>
+        </>
+      )}
       <Box
         className="df jcsb"
         px={2}
