@@ -21,6 +21,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import httpAuthorization from "~/utils/httpAuthorization";
 import { GlobalActions } from "../../../store/global";
 import { makeStyles } from "@material-ui/styles";
+import { imageUrlFormatter } from "~/utils/stringUtils";
 
 const useStyle = makeStyles(() => ({
   iconButton: {
@@ -39,7 +40,7 @@ const MemberItem = ({ user }) => {
           fontSize: 16,
           marginRight: 2,
         }}
-        src={user.avatar ? user.avatar : "not-exist"}
+        src={user.avatar ? imageUrlFormatter(user.avatar) : "not-exist"}
         alt={user.name}
       />
       <Typography>{user.name}</Typography>
