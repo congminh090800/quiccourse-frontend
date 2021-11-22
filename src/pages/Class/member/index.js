@@ -22,6 +22,9 @@ import httpAuthorization from "~/utils/httpAuthorization";
 import { GlobalActions } from "../../../store/global";
 import { makeStyles } from "@material-ui/styles";
 import { imageUrlFormatter } from "~/utils/stringUtils";
+import * as Yup from "yup";
+import { Formik } from "formik";
+import * as message from "~/utils/validateRuleMessages";
 
 const useStyle = makeStyles(() => ({
   iconButton: {
@@ -213,15 +216,100 @@ const InviteMemberDialog = ({ open, handleClose, variant }) => {
     </Dialog>
   );
 };
+const initialValues = {
+  studentId: "",
+  note: "",
+};
+
+const validationSchema = Yup.object({
+  studentId: Yup.string()
+    .min(6, message.min("Student Id", 6))
+    .required(message.required("Student Id")),
+  note: Yup.string().optional(),
+});
 
 const ClassMemberPage = () => {
   const { info } = useSelector((state) => state.classes);
   const { user } = useSelector((state) => state.auth);
+  const [requesting, setRequesting] = useState(false);
   const [dialogVariant, setDialogVariant] = useState("");
 
   const isOwner = info.owner._id === user._id;
   return (
     <ClassLayout maxWidth={"md"} style={{ width: 808 }}>
+      <Box
+        className="df jcsb"
+        style={{ borderBottom: "1px solid #1967d2", marginBottom: "20px" }}
+      >
+        <Typography style={{ color: "#1967d2", fontSize: "2rem" }}>
+          Student Identification
+        </Typography>
+      </Box>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={(values) => {
+          setRequesting(true);
+          values = {
+            ...values,
+            classId: info._id,
+            userId: user._id,
+          };
+          window.alert(JSON.stringify(values));
+          setRequesting(false);
+        }}
+      >
+        {(formik) => (
+          <form
+            className="student-id-mapping-form"
+            onSubmit={formik.handleSubmit}
+          >
+            <div>
+              <TextField
+                sx={{ marginBottom: "10px" }}
+                id="studentId"
+                name="studentId"
+                label="Student Id"
+                value={formik.values.studentId}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.studentId && Boolean(formik.errors.studentId)
+                }
+                helperText={formik.touched.studentId && formik.errors.studentId}
+                variant="outlined"
+                onBlur={formik.handleBlur}
+                fullWidth
+              />
+            </div>
+            <div>
+              <TextField
+                sx={{ marginBottom: "10px" }}
+                id="note"
+                name="note"
+                label="Note"
+                value={formik.values.note}
+                onChange={formik.handleChange}
+                error={formik.touched.note && Boolean(formik.errors.note)}
+                helperText={formik.touched.note && formik.errors.note}
+                variant="outlined"
+                onBlur={formik.handleBlur}
+                fullWidth
+                multiline
+                rows={4}
+              />
+            </div>
+            <LoadingButton
+              loading={requesting}
+              color="primary"
+              variant="contained"
+              type="submit"
+              fullWidth
+            >
+              Send request
+            </LoadingButton>
+          </form>
+        )}
+      </Formik>
       <Box
         className="df jcsb"
         px={2}
