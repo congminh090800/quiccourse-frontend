@@ -25,6 +25,7 @@ import { imageUrlFormatter } from "~/utils/stringUtils";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import * as message from "~/utils/validateRuleMessages";
+import { Snackbar, Alert } from '@mui/material';
 
 const useStyle = makeStyles(() => ({
   iconButton: {
@@ -218,14 +219,14 @@ const InviteMemberDialog = ({ open, handleClose, variant }) => {
 };
 const initialValues = {
   studentId: "",
-  note: "",
+  message: "",
 };
 
 const validationSchema = Yup.object({
   studentId: Yup.string()
     .min(6, message.min("Student Id", 6))
     .required(message.required("Student Id")),
-  note: Yup.string().optional(),
+  message: Yup.string().optional(),
 });
 
 const ClassMemberPage = () => {
@@ -233,92 +234,115 @@ const ClassMemberPage = () => {
   const { user } = useSelector((state) => state.auth);
   const [requesting, setRequesting] = useState(false);
   const [dialogVariant, setDialogVariant] = useState("");
+  const [studentId, setStudentId] = useState(null);
+  const [message, setMessage] = useState(null);
+
+  React.useEffect(() => {
+    if (info) {
+      //get student id
+
+    }
+  }, []);
 
   const isOwner = info.owner._id === user._id;
   return (
     <ClassLayout maxWidth={"md"} style={{ width: 808 }}>
       {info.participants.some(
         (participant) => participant._id === user._id
-      ) && (
-        <>
-          <Box
-            className="df jcsb"
-            style={{ borderBottom: "1px solid #1967d2", marginBottom: "20px" }}
-          >
-            <Typography style={{ color: "#1967d2", fontSize: "2rem" }}>
-              Student Identification
-            </Typography>
-          </Box>
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={(values) => {
-              setRequesting(true);
-              values = {
-                ...values,
-                classId: info._id,
-                userId: user._id,
-              };
-              window.alert(JSON.stringify(values));
-              setRequesting(false);
-            }}
-          >
-            {(formik) => (
-              <form
-                className="student-id-mapping-form"
-                onSubmit={formik.handleSubmit}
-              >
-                <div>
-                  <TextField
-                    sx={{ marginBottom: "10px" }}
-                    id="studentId"
-                    name="studentId"
-                    label="Student Id"
-                    value={formik.values.studentId}
-                    onChange={formik.handleChange}
-                    error={
-                      formik.touched.studentId &&
-                      Boolean(formik.errors.studentId)
-                    }
-                    helperText={
-                      formik.touched.studentId && formik.errors.studentId
-                    }
-                    variant="outlined"
-                    onBlur={formik.handleBlur}
-                    fullWidth
-                  />
-                </div>
-                <div>
-                  <TextField
-                    sx={{ marginBottom: "10px" }}
-                    id="note"
-                    name="note"
-                    label="Note"
-                    value={formik.values.note}
-                    onChange={formik.handleChange}
-                    error={formik.touched.note && Boolean(formik.errors.note)}
-                    helperText={formik.touched.note && formik.errors.note}
-                    variant="outlined"
-                    onBlur={formik.handleBlur}
-                    fullWidth
-                    multiline
-                    rows={4}
-                  />
-                </div>
-                <LoadingButton
-                  loading={requesting}
-                  color="primary"
-                  variant="contained"
-                  type="submit"
-                  fullWidth
+      ) && (studentId == null) && (
+          <>
+            <Box
+              className="df jcsb"
+              style={{ borderBottom: "1px solid #1967d2", marginBottom: "20px" }}
+            >
+              <Typography style={{ color: "#1967d2", fontSize: "2rem" }}>
+                Student Identification
+              </Typography>
+            </Box>
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={async (values) => {
+                setRequesting(true);
+                values = {
+                  ...values,
+                  courseId: info._id,
+                  studentId: values.studentId
+                };
+                console.log(values);
+                try {
+                  const result = await httpAuthorization.post(endpoints.sendMappingRequest, values);
+                  setRequesting(false);
+                  setMessage('Your request has been sent')
+                  setStudentId('');
+                } catch (error) {
+                  setRequesting(false);
+                  setMessage('#' + error.message);
+                  console.log(error);
+                }
+              }}
+            >
+              {(formik) => (
+                <form
+                  className="student-id-mapping-form"
+                  onSubmit={formik.handleSubmit}
                 >
-                  Send request
-                </LoadingButton>
-              </form>
-            )}
-          </Formik>
-        </>
-      )}
+                  <div>
+                    <TextField
+                      sx={{ marginBottom: "10px" }}
+                      id="studentId"
+                      name="studentId"
+                      label="Student Id"
+                      value={formik.values.studentId}
+                      onChange={formik.handleChange}
+                      error={
+                        formik.touched.studentId &&
+                        Boolean(formik.errors.studentId)
+                      }
+                      helperText={
+                        formik.touched.studentId && formik.errors.studentId
+                      }
+                      variant="outlined"
+                      onBlur={formik.handleBlur}
+                      fullWidth
+                    />
+                  </div>
+                  <div>
+                    <TextField
+                      sx={{ marginBottom: "10px" }}
+                      id="message"
+                      name="message"
+                      label="Message"
+                      value={formik.values.message}
+                      onChange={formik.handleChange}
+                      error={formik.touched.message && Boolean(formik.errors.message)}
+                      helperText={formik.touched.message && formik.errors.message}
+                      variant="outlined"
+                      onBlur={formik.handleBlur}
+                      fullWidth
+                      multiline
+                      rows={4}
+                    />
+                  </div>
+                  <LoadingButton
+                    loading={requesting}
+                    color="primary"
+                    variant="contained"
+                    type="submit"
+                    fullWidth
+                  >
+                    Send request
+                  </LoadingButton>
+                </form>
+              )}
+            </Formik>
+          </>
+        )}
+      <Snackbar open={message !== null} autoHideDuration={2000} onClose={() => setMessage(null)}>
+        <Alert onClose={() => setMessage(null)} severity={message?.startsWith('#') ? 'error' : 'success'} sx={{ width: '100%' }}>
+          {message?.startsWith('#') ? message.substring(1) : message}
+        </Alert>
+      </Snackbar>
       <Box
         className="df jcsb"
         px={2}
@@ -344,9 +368,11 @@ const ClassMemberPage = () => {
           </Typography>
         </Box>
       </Box>
-      {[info.owner, ...info.teachers].map((user) => {
-        return <MemberItem key={user.id} user={user} />;
-      })}
+      {
+        [info.owner, ...info.teachers].map((user) => {
+          return <MemberItem key={user.id} user={user} />;
+        })
+      }
       <Box
         className="df jcsb aic"
         px={2}
@@ -372,19 +398,23 @@ const ClassMemberPage = () => {
           </Typography>
         </Box>
       </Box>
-      {info?.participants?.map((user) => {
-        return <MemberItem key={user.id} user={user} />;
-      })}
-      {dialogVariant && (
-        <InviteMemberDialog
-          open={!!dialogVariant}
-          handleClose={() => {
-            setDialogVariant(null);
-          }}
-          variant={dialogVariant}
-        />
-      )}
-    </ClassLayout>
+      {
+        info?.participants?.map((user) => {
+          return <MemberItem key={user.id} user={user} />;
+        })
+      }
+      {
+        dialogVariant && (
+          <InviteMemberDialog
+            open={!!dialogVariant}
+            handleClose={() => {
+              setDialogVariant(null);
+            }}
+            variant={dialogVariant}
+          />
+        )
+      }
+    </ClassLayout >
   );
 };
 
