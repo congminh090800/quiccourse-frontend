@@ -239,9 +239,9 @@ const ClassMemberPage = () => {
 
   React.useEffect(async () => {
     if (info) {
-      const studentId = await httpAuthorization.get(endpoints.findStudentMapping(info._id));
-      if (studentId) {
-        setStudentId(studentId);
+      const data = await httpAuthorization.get(endpoints.findStudentMapping(info._id));
+      if (data) {
+        setStudentId(data.data);
       }
     }
   }, []);
