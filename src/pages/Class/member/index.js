@@ -237,10 +237,12 @@ const ClassMemberPage = () => {
   const [studentId, setStudentId] = useState(null);
   const [message, setMessage] = useState(null);
 
-  React.useEffect(() => {
+  React.useEffect(async () => {
     if (info) {
-      //get student id
-
+      const studentId = await httpAuthorization.get(endpoints.findStudentMapping(info._id));
+      if (studentId) {
+        setStudentId(studentId);
+      }
     }
   }, []);
 
