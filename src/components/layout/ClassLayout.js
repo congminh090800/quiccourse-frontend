@@ -28,7 +28,7 @@ const ClassLayout = ({ children, maxWidth, style }) => {
         history.push("/");
       }
     };
-    if (code !== info?.code || !info) fetchClassData();
+    fetchClassData();
   }, [code]);
   return (
     <div

@@ -17,6 +17,7 @@ const ParticipatingCoursePage = () => {
         const result = await httpAuthorization.patch(
           endpoints.studentAccept(code)
         );
+        console.log("🚀 ~ file: index.js ~ line 20 ~ result", result);
         setLoading(false);
       } catch (error) {}
     })();
