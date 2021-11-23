@@ -30,6 +30,7 @@ const ClassLayout = ({ children, maxWidth, style }) => {
     };
     fetchClassData();
   }, [code]);
+
   return (
     <div
       style={{

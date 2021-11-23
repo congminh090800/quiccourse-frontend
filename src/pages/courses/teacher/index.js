@@ -31,7 +31,7 @@ const TeacherParticipatingCoursePage = () => {
         {loading ? "Processing..." : "Redirecting...."}
       </Typography>
       <Typography style={{ marginTop: 16, color: "#red" }}>{error}</Typography>
-      {!loading && <Redirect to={`/classes/${code}`} />}
+      {!loading && <Redirect to={`/classes/${code.split("!").pop()}`} />}
     </div>
   );
 };
