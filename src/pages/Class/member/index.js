@@ -340,6 +340,16 @@ const ClassMemberPage = () => {
             </Formik>
           </>
         )}
+      {studentId &&
+        <Box
+          className="df jcsb aic"
+          px={2}
+          pt={2}
+          pb={1}
+          style={{ borderBottom: "1px solid #1967d2" }}
+        >
+          <Typography style={{ color: "#1967d2", fontSize: "1.5rem" }}>Student ID: {studentId}</Typography>
+        </Box>}
       <Snackbar open={message !== null} autoHideDuration={2000} onClose={() => setMessage(null)}>
         <Alert onClose={() => setMessage(null)} severity={message?.startsWith('#') ? 'error' : 'success'} sx={{ width: '100%' }}>
           {message?.startsWith('#') ? message.substring(1) : message}
