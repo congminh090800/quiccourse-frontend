@@ -12,6 +12,7 @@ import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { GlobalActions } from "./store/global";
 import ParticipatingCoursePage from "./pages/courses/participate";
+import TeacherParticipatingCoursePage from "./pages/courses/teacher";
 
 function App() {
   const { snackbarSuccess } = useSelector((state) => state.global);
@@ -34,6 +35,9 @@ function App() {
           </AuthRoute>
           <AuthRoute path="/courses/participate/:code" exact>
             <ParticipatingCoursePage />
+          </AuthRoute>
+          <AuthRoute path="/courses/teacher/:code" exact>
+            <TeacherParticipatingCoursePage />
           </AuthRoute>
           <Route path="/login">
             <Login />

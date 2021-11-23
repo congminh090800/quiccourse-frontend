@@ -17,5 +17,6 @@ export default {
   sendStudent: "api/courses/invite/email/send",
   sendTeacher: "/api/courses/invite/email/send-teachers",
   studentAccept: (code) => `/api/courses/invite/${code}`,
+  teacherAccept: (code) => `/api/courses/invite/teacher/${code}`,
   updateInformation: "/api/user",
 };

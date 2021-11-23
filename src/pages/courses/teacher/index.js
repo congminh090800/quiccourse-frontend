@@ -6,16 +6,17 @@ import httpAuthorization from "~/utils/httpAuthorization";
 import { useParams } from "react-router-dom";
 import { Redirect } from "react-router-dom";
 
-const ParticipatingCoursePage = () => {
+const TeacherParticipatingCoursePage = () => {
   const { code } = useParams();
 
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState("");
+
   React.useEffect(() => {
     (async () => {
       try {
         const result = await httpAuthorization.patch(
-          endpoints.studentAccept(code)
+          endpoints.teacherAccept(code)
         );
         setLoading(false);
       } catch (error) {
@@ -35,4 +36,4 @@ const ParticipatingCoursePage = () => {
   );
 };
 
-export default ParticipatingCoursePage;
+export default TeacherParticipatingCoursePage;
