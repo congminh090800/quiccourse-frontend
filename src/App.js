@@ -7,8 +7,16 @@ import ClassPage from "./pages/Class";
 import ClassMemberPage from "./pages/Class/member";
 import SignUp from "~/pages/SignUp";
 import Profile from "./pages/Profile";
+import { useDispatch, useSelector } from "react-redux";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import { GlobalActions } from "./store/global";
+import ParticipatingCoursePage from "./pages/courses/participate";
+import TeacherParticipatingCoursePage from "./pages/courses/teacher";
 
 function App() {
+  const { snackbarSuccess } = useSelector((state) => state.global);
+  const dispatch = useDispatch();
   return (
     <Router>
       <div className="App">
@@ -25,6 +33,12 @@ function App() {
           <AuthRoute path="/profile">
             <Profile />
           </AuthRoute>
+          <AuthRoute path="/courses/participate/:code" exact>
+            <ParticipatingCoursePage />
+          </AuthRoute>
+          <AuthRoute path="/courses/teacher/:code" exact>
+            <TeacherParticipatingCoursePage />
+          </AuthRoute>
           <Route path="/login">
             <Login />
           </Route>
@@ -32,6 +46,27 @@ function App() {
             <SignUp />
           </Route>
         </Switch>
+        <Snackbar
+          open={!!snackbarSuccess}
+          autoHideDuration={6000}
+          onClose={(event, reason) => {
+            if (reason === "clickaway") {
+              return;
+            }
+            dispatch(GlobalActions.setSnackbarSuccess(null));
+            // setOpen(false);
+          }}
+        >
+          <Alert
+            onClose={() => {
+              dispatch(GlobalActions.setSnackbarSuccess(null));
+            }}
+            severity="success"
+            sx={{ width: "100%" }}
+          >
+            {snackbarSuccess}
+          </Alert>
+        </Snackbar>
       </div>
     </Router>
   );

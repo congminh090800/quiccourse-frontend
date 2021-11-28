@@ -1,0 +1,39 @@
+import { CircularProgress, Typography } from "@material-ui/core";
+import React from "react";
+import endpoints from "~/constants/endpoints";
+import LoadingButton from "@mui/lab/LoadingButton";
+import httpAuthorization from "~/utils/httpAuthorization";
+import { useParams } from "react-router-dom";
+import { Redirect } from "react-router-dom";
+
+const TeacherParticipatingCoursePage = () => {
+  const { code } = useParams();
+
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState("");
+
+  React.useEffect(() => {
+    (async () => {
+      try {
+        const result = await httpAuthorization.patch(
+          endpoints.teacherAccept(code)
+        );
+        setLoading(false);
+      } catch (error) {
+        setError(error.message);
+      }
+    })();
+  }, []);
+  return (
+    <div style={{ width: "100vw", height: "100vh" }} className="df aic fdc jcc">
+      <CircularProgress />
+      <Typography style={{ marginTop: 16 }}>
+        {loading ? "Processing..." : "Redirecting...."}
+      </Typography>
+      <Typography style={{ marginTop: 16, color: "#red" }}>{error}</Typography>
+      {!loading && <Redirect to={`/classes/${code.split("!").pop()}`} />}
+    </div>
+  );
+};
+
+export default TeacherParticipatingCoursePage;

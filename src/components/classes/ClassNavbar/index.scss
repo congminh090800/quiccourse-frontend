@@ -60,6 +60,13 @@
 
   text-transform: none !important;
 }
+.active {
+  color: blue !important;
+}
+.active:hover {
+  background: #1967d2 !important;
+}
+
 .nav-button:hover {
   color: #202124 !important;
   background: rgba(32, 33, 36, 0.039) !important;
