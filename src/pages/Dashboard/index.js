@@ -31,6 +31,7 @@ const Dashboard = () => {
         const res = await httpAuthorization.get(endpoints.getMyCourses, {
           params,
         });
+        console.log(res.data);
         setClasses(res.data.docs);
         setPagination({
           ...pagination,

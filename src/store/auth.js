@@ -14,6 +14,7 @@ export const auth = createSlice({
     accessToken: "",
     refreshToken: "",
     expiredAt: null,
+    accessExpiredAt: null,
     loading: false,
     user: {},
   },
@@ -22,11 +23,13 @@ export const auth = createSlice({
       state.accessToken = "";
       state.refreshToken = "";
       state.expiredAt = null;
+      state.accessExpiredAt = null;
       state.user = {};
     },
     REFRESH_ACCESS_TOKEN: (state, { payload }) => {
       state.accessToken = payload;
       state.user.accessToken = payload;
+      state.accessExpiredAt = Date.now() + 10;
     },
     UPDATE_GOOGLE_ACCOUNT: (state, { payload }) => {
       state.accessToken = payload.accessToken;
@@ -37,13 +40,19 @@ export const auth = createSlice({
       state.user.avatar = payload;
     },
     UPDATE_USER_INFO: (state, { payload }) => {
-      const newUser = { ...state.user, name: payload.name, birthDate: payload.birthDate, gender: payload.gender, phone: payload.phone };
+      const newUser = {
+        ...state.user,
+        name: payload.name,
+        birthDate: payload.birthDate,
+        gender: payload.gender,
+        phone: payload.phone,
+      };
       state.user = newUser;
     },
     SET_USER_STUDENT_ID: (state, { payload }) => {
       const newUser = { ...state.user, studentId: payload };
       state.user = newUser;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(updateAccessToken.fulfilled, (state, { payload }) => {
@@ -51,6 +60,7 @@ export const auth = createSlice({
       state.user = payload.user;
       state.refreshToken = payload.refreshToken;
       state.expiredAt = payload.expiredAt;
+      state.accessExpiredAt = Date.now() + 10;
       state.loading = false;
     });
     builder.addCase(updateAccessToken.pending, (state, { payload }) => {
@@ -62,6 +72,7 @@ export const auth = createSlice({
       state.refreshToken = "";
       state.expiredAt = null;
       state.loading = false;
+      state.accessExpiredAt = null;
     });
   },
 });
@@ -72,7 +83,7 @@ export const {
   UPDATE_GOOGLE_ACCOUNT,
   UPDATE_USER_AVATAR,
   UPDATE_USER_INFO,
-  SET_USER_STUDENT_ID
+  SET_USER_STUDENT_ID,
 } = auth.actions;
 
 export default auth.reducer;
