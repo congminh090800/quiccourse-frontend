@@ -39,6 +39,10 @@ export const auth = createSlice({
     UPDATE_USER_INFO: (state, { payload }) => {
       const newUser = { ...state.user, name: payload.name, birthDate: payload.birthDate, gender: payload.gender, phone: payload.phone };
       state.user = newUser;
+    },
+    SET_USER_STUDENT_ID: (state, { payload }) => {
+      const newUser = { ...state.user, studentId: payload };
+      state.user = newUser;
     }
   },
   extraReducers: (builder) => {
@@ -67,7 +71,8 @@ export const {
   REFRESH_ACCESS_TOKEN,
   UPDATE_GOOGLE_ACCOUNT,
   UPDATE_USER_AVATAR,
-  UPDATE_USER_INFO
+  UPDATE_USER_INFO,
+  SET_USER_STUDENT_ID
 } = auth.actions;
 
 export default auth.reducer;

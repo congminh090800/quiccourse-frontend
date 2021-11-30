@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Avatar, IconButton, TextField } from "@material-ui/core";
+import { Avatar, IconButton, TextField, Button } from "@material-ui/core";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -23,6 +23,11 @@ const FieldData = (props) => {
         return date.toLocaleDateString("vn-VN");
       case "GENDER":
         return content?.charAt(0).toUpperCase() + content?.slice(1);
+      case "STUDENTID":
+        if (content == null) {
+          return 'Set your student ID now'
+        }
+        return content;
       default:
         return content;
     }
@@ -31,6 +36,60 @@ const FieldData = (props) => {
   const handleOnClickExpand = () => {
     setIsExpanded(!isExpanded);
   };
+
+  let action;
+
+  if (props.field === "PHOTO") {
+    action = (
+      <div
+        style={{
+          position: "relative",
+          overflow: "hidden",
+          borderRadius: "50%",
+        }}
+      >
+        <Avatar
+          style={{ height: 60, width: 60 }}
+          alt={props.name}
+          src={props.avatar ? imageUrlFormatter(props.avatar) : "not-exist"}
+        />
+        <div
+          style={{
+            backgroundColor: "rgb(35, 38, 41, 0.3)",
+            position: "absolute",
+            bottom: 0,
+            height: "40%",
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+          }}
+          onClick={props.handler}
+        >
+          <CameraAltIcon style={{ color: "#000000", width: 18 }} />
+        </div>
+      </div>
+    )
+  } else if (props.field === "STUDENTID") {
+    action = props.content == null && (
+      <Button variant="outlined" onClick={props.handler}>
+        Set
+      </Button>
+    );
+  }
+  else {
+    action = (
+      <IconButton onClick={handleOnClickExpand}>
+        {props.field &&
+          props.field !== "EMAIL" &&
+          (isExpanded ? (
+            <KeyboardArrowDownIcon />
+          ) : (
+            <ArrowForwardIosIcon />
+          ))}
+      </IconButton>
+    )
+  }
+
 
   return (
     <div>
@@ -55,45 +114,7 @@ const FieldData = (props) => {
           {props.field}
         </p>
         <p style={contentStyle}>{formatContent(props.content)}</p>
-        {props.field === "PHOTO" ? (
-          <div
-            style={{
-              position: "relative",
-              overflow: "hidden",
-              borderRadius: "50%",
-            }}
-          >
-            <Avatar
-              style={{ height: 60, width: 60 }}
-              alt={props.name}
-              src={props.avatar ? imageUrlFormatter(props.avatar) : "not-exist"}
-            />
-            <div
-              style={{
-                backgroundColor: "rgb(35, 38, 41, 0.3)",
-                position: "absolute",
-                bottom: 0,
-                height: "40%",
-                width: "100%",
-                display: "flex",
-                justifyContent: "center",
-              }}
-              onClick={props.handler}
-            >
-              <CameraAltIcon style={{ color: "#000000", width: 18 }} />
-            </div>
-          </div>
-        ) : (
-          <IconButton onClick={handleOnClickExpand}>
-            {props.field &&
-              props.field !== "EMAIL" &&
-              (isExpanded ? (
-                <KeyboardArrowDownIcon />
-              ) : (
-                <ArrowForwardIosIcon />
-              ))}
-          </IconButton>
-        )}
+        {action}
       </div>
       {isExpanded && (
         <div style={{ display: "flex" }}>

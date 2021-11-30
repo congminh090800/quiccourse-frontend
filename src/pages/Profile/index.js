@@ -6,6 +6,7 @@ import { Card, CardContent, Typography } from '@material-ui/core';
 import LoadingButton from '@mui/lab/LoadingButton';
 import FieldData from '../../components/profile/FieldData';
 import ChangeAvatarDialog from '../../components/profile/ChangeAvatarDialog';
+import SetStudentIdDialog from '../../components/profile/SetStudentIdDialog';
 import { Snackbar, Alert } from '@mui/material';
 import httpAuthorization from '../../utils/httpAuthorization';
 import endpoints from '../../constants/endpoints';
@@ -19,6 +20,7 @@ const Profile = () => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.auth.user);
     const [showChangeAvatarDialog, setShowChangeAvatarDialog] = useState(false);
+    const [showSetStudentIdDialog, setShowSetStudentIdDialog] = useState(false);
     const [message, setMessage] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -28,6 +30,14 @@ const Profile = () => {
 
     const handleChangeAvatarDialogClose = () => {
         setShowChangeAvatarDialog(false);
+    };
+
+    const handleOpenSetStudentIdDialog = () => {
+        setShowSetStudentIdDialog(true);
+    };
+
+    const handleCloseSetStudentIdDialog = () => {
+        setShowSetStudentIdDialog(false);
     };
 
     const handleOnCloseSnackbar = (event, reason) => {
@@ -83,6 +93,7 @@ const Profile = () => {
                                 <Card style={{ borderRadius: 8 }} variant="outlined" className="profile-content-body-card">
                                     <CardContent style={{ padding: '16px 0px' }}>
                                         <Typography style={{ padding: 16 }} variant="h5" className='cardItem'>Basic info</Typography>
+                                        <FieldData field='STUDENTID' content={user.studentId} handler={handleOpenSetStudentIdDialog} />
                                         <FieldData field='PHOTO' content='A photo helps personalize your account' avatar={user.avatar} name={user.name} handler={handleOpenChangeAvatarDialog} />
                                         <FieldData formik={formik} fieldName='name' field='NAME' content={user.name} />
                                         <FieldData formik={formik} fieldName='birthDate' field='BIRTHDATE' content={user.birthDate} />
@@ -106,6 +117,7 @@ const Profile = () => {
                             </div>
                         </div>
                         <ChangeAvatarDialog open={showChangeAvatarDialog} onClose={handleChangeAvatarDialogClose} user={user} setMessage={setMessage} />
+                        <SetStudentIdDialog open={showSetStudentIdDialog} onClose={handleCloseSetStudentIdDialog} setMessage={setMessage} />
                         {formik.isValid && <LoadingButton type='submit' loading={isLoading} variant="outlined" style={{ position: 'fixed', right: 16, bottom: 16 }} >Save changes</LoadingButton>}
                     </form>
                 )}
