@@ -19,5 +19,8 @@ export default {
   studentAccept: (code) => `/api/courses/invite/${code}`,
   teacherAccept: (code) => `/api/courses/invite/teacher/${code}`,
   updateInformation: "/api/user",
-  setStudentId: "/api/user/student-id"
+  sendMappingRequest: "/api/courses/mapping/request",
+  findStudentMapping: (courseId) => `/api/courses/mapping/find/${courseId}`,
+  createStructure: "/api/courses/grade",
+  setStudentId: "/api/user/student-id",
 };

@@ -65,7 +65,17 @@ const ClassNavbar = () => {
               </Button>
             </Box>
             <Box>
-              <Button className="nav-button">Classwork</Button>
+              <Button
+                className={`nav-button ${
+                  location.pathname.split("/").pop() == "classwork"
+                    ? "active"
+                    : ""
+                }`}
+                component={Link}
+                to={`/classes/${info?.code}/classwork`}
+              >
+                Classwork
+              </Button>
             </Box>
             <Box>
               <Button

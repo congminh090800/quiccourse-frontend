@@ -13,9 +13,13 @@ import Alert from "@mui/material/Alert";
 import { GlobalActions } from "./store/global";
 import ParticipatingCoursePage from "./pages/courses/participate";
 import TeacherParticipatingCoursePage from "./pages/courses/teacher";
+import ClassWorkPage from "./pages/Class/classwork";
 
 function App() {
-  const { snackbarSuccess } = useSelector((state) => state.global);
+  const { snackbarSuccess, snackbarError } = useSelector(
+    (state) => state.global
+  );
+
   const dispatch = useDispatch();
   return (
     <Router>
@@ -27,6 +31,10 @@ function App() {
           <AuthRoute path="/classes/:code" exact>
             <ClassPage />
           </AuthRoute>
+          <AuthRoute path="/classes/:code/classwork" exact>
+            <ClassWorkPage />
+          </AuthRoute>
+
           <AuthRoute path="/classes/:code/member">
             <ClassMemberPage />
           </AuthRoute>
@@ -49,6 +57,7 @@ function App() {
         <Snackbar
           open={!!snackbarSuccess}
           autoHideDuration={6000}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
           onClose={(event, reason) => {
             if (reason === "clickaway") {
               return;
@@ -65,6 +74,28 @@ function App() {
             sx={{ width: "100%" }}
           >
             {snackbarSuccess}
+          </Alert>
+        </Snackbar>
+        <Snackbar
+          open={!!snackbarError}
+          autoHideDuration={6000}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          onClose={(event, reason) => {
+            if (reason === "clickaway") {
+              return;
+            }
+            dispatch(GlobalActions.setSnackbarError(null));
+            // setOpen(false);
+          }}
+        >
+          <Alert
+            onClose={() => {
+              dispatch(GlobalActions.setSnackbarError(null));
+            }}
+            severity="error"
+            sx={{ width: "100%" }}
+          >
+            {snackbarError}
           </Alert>
         </Snackbar>
       </div>
