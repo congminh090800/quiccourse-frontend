@@ -29,7 +29,7 @@ export const auth = createSlice({
     REFRESH_ACCESS_TOKEN: (state, { payload }) => {
       state.accessToken = payload;
       state.user.accessToken = payload;
-      state.accessExpiredAt = Date.now() + 10;
+      state.accessExpiredAt = Date.now() + 43100000;
     },
     UPDATE_GOOGLE_ACCOUNT: (state, { payload }) => {
       state.accessToken = payload.accessToken;
@@ -60,7 +60,7 @@ export const auth = createSlice({
       state.user = payload.user;
       state.refreshToken = payload.refreshToken;
       state.expiredAt = payload.expiredAt;
-      state.accessExpiredAt = Date.now() + 10;
+      state.accessExpiredAt = Date.now() + 43100000;
       state.loading = false;
     });
     builder.addCase(updateAccessToken.pending, (state, { payload }) => {
