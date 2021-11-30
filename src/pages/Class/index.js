@@ -1,5 +1,6 @@
 import { Typography, IconButton, Paper } from "@material-ui/core";
 import { Box } from "@material-ui/system";
+import ContentCopy from "@mui/icons-material/ContentCopy";
 import { ErrorOutline } from "@mui/icons-material";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
@@ -85,6 +86,13 @@ const ClassInfo = () => {
 
 const ClassPage = () => {
   const { info } = useSelector((state) => state.classes);
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(info.code);
+    } catch (err) {
+      console.log("copy failed", err);
+    }
+  };
   return (
     <ClassLayout>
       <ClassInfo />
@@ -94,28 +102,50 @@ const ClassPage = () => {
       </Box>
     </Card> */}
       <Box
-        style={{
-          width: "100%",
-        }}
-        mt={2}
+        sx={{ display: "flex", marginTop: "8px", bgcolor: "background.paper" }}
       >
-        <Box style={{ width: "30%" }}>
-          <Paper elevation={4}>
-            <Box style={{ padding: 16 }} className="df fdc">
-              <Typography className="sb" style={{ marginBottom: 8 }}>
-                Grade Structure
-              </Typography>
-              {info?.gradeStructure?.length ? (
-                info?.gradeStructure?.map((data) => {
-                  return (
-                    <Typography>{`${data.name} : ${data.point}`}</Typography>
-                  );
-                })
-              ) : (
-                <Typography>Empty Structure</Typography>
-              )}
-            </Box>
-          </Paper>
+        <Box
+          sx={{
+            border: "0.0625rem solid #dadce0",
+            borderRadius: "0.5rem",
+            marginRight: "24px",
+            marginBottom: "24px",
+            padding: "16px",
+          }}
+        >
+          <Typography
+            sx={{ fontSize: "16px", fontWeight: "500", color: "#3c4043" }}
+          >
+            Class code
+          </Typography>
+          <Typography
+            sx={{
+              fontSize: "24px",
+              fontWeight: "400",
+              color: "#1967d2",
+              marginTop: "8px",
+            }}
+          >
+            {info.code}
+            <IconButton onClick={copyToClipboard} sx={{ marginLeft: "8px" }}>
+              <ContentCopy
+                sx={{
+                  alignSelf: "center",
+                  color: "#1967d2",
+                }}
+              ></ContentCopy>
+            </IconButton>
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            border: "0.0625rem solid #dadce0",
+            borderRadius: "0.5rem",
+            flexGrow: 1,
+            height: "40px",
+          }}
+        >
+          <Typography>Second column</Typography>
         </Box>
       </Box>
     </ClassLayout>
