@@ -6,10 +6,14 @@ export const global = createSlice({
   name: "global",
   initialState: {
     snackbarSuccess: null,
+    snackbarError: null,
   },
   reducers: {
     setSnackbarSuccess: (state, { payload }) => {
       state.snackbarSuccess = payload;
+    },
+    setSnackbarError: (state, { payload }) => {
+      state.snackbarError = payload;
     },
   },
   extraReducers: (builder) => {},

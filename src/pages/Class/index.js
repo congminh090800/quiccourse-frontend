@@ -84,6 +84,7 @@ const ClassInfo = () => {
 };
 
 const ClassPage = () => {
+  const { info } = useSelector((state) => state.classes);
   return (
     <ClassLayout>
       <ClassInfo />
@@ -92,6 +93,31 @@ const ClassPage = () => {
         <Avatar src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTabtQiNnz9PBR67bOWmnltOSG0o1pGTtRnXw&usqp=CAU" />
       </Box>
     </Card> */}
+      <Box
+        style={{
+          width: "100%",
+        }}
+        mt={2}
+      >
+        <Box style={{ width: "30%" }}>
+          <Paper elevation={4}>
+            <Box style={{ padding: 16 }} className="df fdc">
+              <Typography className="sb" style={{ marginBottom: 8 }}>
+                Grade Structure
+              </Typography>
+              {info?.gradeStructure?.length ? (
+                info?.gradeStructure?.map((data) => {
+                  return (
+                    <Typography>{`${data.name} : ${data.point}`}</Typography>
+                  );
+                })
+              ) : (
+                <Typography>Empty Structure</Typography>
+              )}
+            </Box>
+          </Paper>
+        </Box>
+      </Box>
     </ClassLayout>
   );
 };

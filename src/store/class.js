@@ -11,6 +11,20 @@ export const classes = createSlice({
     setClassInfo: (state, { payload }) => {
       state.info = payload;
     },
+    setGradeStructure: (state, { payload }) => {
+      state.info.gradeStructure = payload;
+    },
+    addGradeStructure: (state, { payload }) => {
+      state.info.gradeStructure = [
+        ...(state.info.gradeStructure || []),
+        payload,
+      ];
+    },
+    removeGradeStructure: (state, { payload }) => {
+      state.info.gradeStructure = state.info.gradeStructure.filter(
+        (data) => data._id !== payload._id
+      );
+    },
   },
   extraReducers: (builder) => {},
 });
