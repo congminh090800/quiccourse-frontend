@@ -104,49 +104,61 @@ const ClassPage = () => {
       <Box
         sx={{ display: "flex", marginTop: "8px", bgcolor: "background.paper" }}
       >
-        <Box
-          sx={{
-            border: "0.0625rem solid #dadce0",
-            borderRadius: "0.5rem",
-            marginRight: "24px",
-            marginBottom: "24px",
-            padding: "16px",
-          }}
-        >
-          <Typography
-            sx={{ fontSize: "16px", fontWeight: "500", color: "#3c4043" }}
-          >
-            Class code
-          </Typography>
-          <Typography
+        <Box className="df fdc" sx={{ width: "30%", marginRight: 4 }}>
+          <Paper
+            elevation={4}
+            className="df fdc"
             sx={{
-              fontSize: "24px",
-              fontWeight: "400",
-              color: "#1967d2",
-              marginTop: "8px",
+              marginBottom: "24px",
+              padding: "16px",
             }}
           >
-            {info.code}
-            <IconButton onClick={copyToClipboard} sx={{ marginLeft: "8px" }}>
-              <ContentCopy
-                sx={{
-                  alignSelf: "center",
-                  color: "#1967d2",
-                }}
-              ></ContentCopy>
-            </IconButton>
-          </Typography>
+            <Typography
+              sx={{ fontSize: "16px", fontWeight: "500", color: "#3c4043" }}
+            >
+              Class code
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: "24px",
+                fontWeight: "400",
+                color: "#1967d2",
+                marginTop: "8px",
+              }}
+            >
+              {info.code}
+              <IconButton onClick={copyToClipboard} sx={{ marginLeft: "8px" }}>
+                <ContentCopy
+                  sx={{
+                    alignSelf: "center",
+                    color: "#1967d2",
+                  }}
+                ></ContentCopy>
+              </IconButton>
+            </Typography>
+          </Paper>
+          <Paper elevation={4}>
+            <Box style={{ padding: 16 }} className="df fdc">
+              <Typography className="sb" style={{ marginBottom: 8 }}>
+                Grade Structure
+              </Typography>
+              {info?.gradeStructure?.length ? (
+                info?.gradeStructure?.map((data) => {
+                  return (
+                    <Typography>{`${data.name} : ${data.point}`}</Typography>
+                  );
+                })
+              ) : (
+                <Typography>Empty Structure</Typography>
+              )}
+            </Box>
+          </Paper>
         </Box>
         <Box
           sx={{
-            border: "0.0625rem solid #dadce0",
-            borderRadius: "0.5rem",
             flexGrow: 1,
-            height: "40px",
           }}
-        >
-          <Typography>Second column</Typography>
-        </Box>
+        ></Box>
       </Box>
     </ClassLayout>
   );

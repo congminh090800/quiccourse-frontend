@@ -269,9 +269,10 @@ const ClassWorkPage = () => {
   const { user } = useSelector((state) => state.auth);
   const [show, setShow] = useState(null);
   const [dialogData, setDialogData] = useState(null);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
-  const onDragEnd = (result) => {
+  const onDragEnd = async (result) => {
     if (!result.destination) {
       return;
     }
@@ -281,18 +282,22 @@ const ClassWorkPage = () => {
       result.source.index,
       result.destination.index
     );
-    httpAuthorization.patch(endpoints.createStructure, {
+
+    setLoading(true);
+    const response = await httpAuthorization.post(endpoints.createStructure, {
       courseId: _id,
       gradeStructure: items.map((data) => {
         return { point: data.point, name: data.name };
       }),
     });
-    dispatch(ClassesAction.setGradeStructure(items));
+    setLoading(false);
+    dispatch(ClassesAction.setGradeStructure(response.data));
   };
   return (
     <ClassLayout maxWidth={"md"}>
       {user?._id == owner?._id && (
         <Box
+          className="df jcsb aic"
           style={{
             borderBottom: gradeStructure?.length ? "none" : "1px solid #e0e0e0",
           }}
@@ -314,6 +319,11 @@ const ClassWorkPage = () => {
           >
             Create
           </Button>
+          {loading && (
+            <Typography className="sb" color="Highlight">
+              Processing request...
+            </Typography>
+          )}
         </Box>
       )}
       <Box className="df fdc">
