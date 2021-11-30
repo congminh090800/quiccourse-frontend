@@ -10,8 +10,23 @@ const http = axios.create({
 });
 
 http.interceptors.request.use(
-  function (config) {
+  async function (config) {
+    const authData = store.getState().auth;
+    const accessExpired = authData?.accessExpiredAt || 0;
+    console.log(store.getState()?.auth.accessToken);
+    if (Date.now() >= accessExpired) {
+      try {
+        const res = await httpNormal.post(endpoints.refreshToken, {
+          userId: authData?.user?._id,
+          refreshToken: authData?.refreshToken || authData?.user?.refreshToken,
+        });
+        store.dispatch(REFRESH_ACCESS_TOKEN(res.data));
+      } catch (err) {
+        console.log("refresh token failed", err);
+      }
+    }
     const token = store.getState()?.auth?.accessToken;
+    console.log(token);
     const tokenType =
       store.getState()?.auth?.user?.authenticationType || "native";
     if (token) {
@@ -34,25 +49,27 @@ http.interceptors.response.use(
     return response;
   },
   (error) => {
-    const authData = store.getState().auth;
+    // const authData = store.getState().auth;
     const err = (error.response && error.response.data) || error;
     if (error.response && error.response.status) {
       err.status = error.response.status;
     }
-    if (err.message === "TokenExpiredError") {
-      httpNormal
-        .post(endpoints.refreshToken, {
-          userId: authData?.user?._id,
-          refreshToken: authData?.refreshToken || authData?.user?.refreshToken,
-        })
-        .then(function (response) {
-          store.dispatch(REFRESH_ACCESS_TOKEN(response.data));
-          return http.request(error.config);
-        })
-        .catch(function (error) {
-          return Promise.reject(err);
-        });
-    }
+    // if (err.message === "TokenExpiredError") {
+    //   httpNormal
+    //     .post(endpoints.refreshToken, {
+    //       userId: authData?.user?._id,
+    //       refreshToken: authData?.refreshToken || authData?.user?.refreshToken,
+    //     })
+    //     .then(function (response) {
+    //       store.dispatch(REFRESH_ACCESS_TOKEN(response.data));
+    //       http.request(error.config).then((data) => {
+    //         return data;
+    //       });
+    //     })
+    //     .catch(function (error) {
+    //       return Promise.reject(err);
+    //     });
+    // }
     return Promise.reject(err);
   }
 );

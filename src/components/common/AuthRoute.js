@@ -24,10 +24,7 @@ const AuthRoute = (props) => {
 const mapState = (state) => {
   return {
     isAuthenticated:
-      !!state.auth.accessToken &&
-      (state.auth.user.authenticationType !== "google" ||
-        (state.auth.user.authenticationType === "google" &&
-          state.auth.expiredAt > Date.now())),
+      !!state.auth.accessToken && state.auth.expiredAt > Date.now(),
   };
 };
 
