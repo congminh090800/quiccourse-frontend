@@ -1,4 +1,4 @@
-import { LinearProgress } from "@material-ui/core";
+import { LinearProgress, Grid } from "@material-ui/core";
 import { Box } from "@material-ui/system";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -44,19 +44,21 @@ const ClassLayout = ({ children, maxWidth, style }) => {
       {!info || loading ? (
         <LinearProgress sx={{ width: "100%", margin: "64px auto 0" }} />
       ) : (
-        <Box
-          maxWidth={maxWidth ? maxWidth : "lg"}
-          className="df fdc"
-          style={{
-            margin: "64px auto 0",
-            flex: 1,
-            paddingTop: 24,
-            width: 1000,
-            ...style,
-          }}
-        >
-          {children}
-        </Box>
+        <>
+          <Box
+            maxWidth={maxWidth ? maxWidth : "lg"}
+            className="df fdc"
+            style={{
+              margin: "64px auto 0",
+              flex: 1,
+              paddingTop: 24,
+              width: 1000,
+              ...style,
+            }}
+          >
+            {children}
+          </Box>
+        </>
       )}
     </div>
   );
