@@ -4,7 +4,7 @@ import * as XLSX from "xlsx";
 import { Box, Typography } from "@mui/material";
 import { FileDownload } from "@mui/icons-material";
 
-export const ExportExcel = ({ data, fileName }) => {
+export const ExportExcel = ({ data, fileName, title }) => {
   const fileType =
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
   const fileExtension = ".xlsx";
@@ -34,7 +34,7 @@ export const ExportExcel = ({ data, fileName }) => {
       <FileDownload style={{ color: "#1967d2" }} />
       <Box width={24} />
       <Typography style={{ fontWeight: 600, color: "#1967d2" }}>
-        Download
+        {title || "Download"}
       </Typography>
     </Box>
   );

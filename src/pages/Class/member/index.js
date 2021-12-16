@@ -26,6 +26,7 @@ import * as Yup from "yup";
 import { Formik } from "formik";
 import * as message from "~/utils/validateRuleMessages";
 import { Snackbar, Alert } from "@mui/material";
+import { ExportExcel } from "../../../components/common/ExportExcel";
 
 const useStyle = makeStyles(() => ({
   iconButton: {
@@ -34,20 +35,37 @@ const useStyle = makeStyles(() => ({
 }));
 
 const MemberItem = ({ user }) => {
+  const [show, setShow] = useState(false);
   return (
-    <Box className="df aic " p={2}>
-      <Avatar
-        sx={{
-          bgcolor: stringUtils.stringToColor(user.name),
-          width: 32,
-          height: 32,
-          fontSize: 16,
-          marginRight: 2,
-        }}
-        src={user.avatar ? imageUrlFormatter(user.avatar) : "not-exist"}
-        alt={user.name}
-      />
-      <Typography>{user.name}</Typography>
+    <Box
+      className="df aic jcsb "
+      p={2}
+      style={{
+        background: true ? "#e3f2fd" : "transparent",
+        transition: "background 0.5s ease",
+      }}
+      onMouseEnter={() => {
+        if (user.studentId) setShow(true);
+      }}
+      onMouseLeave={() => {
+        if (user.studentId) setShow(false);
+      }}
+    >
+      <Box className="df aic ">
+        <Avatar
+          sx={{
+            bgcolor: stringUtils.stringToColor(user.name),
+            width: 32,
+            height: 32,
+            fontSize: 16,
+            marginRight: 2,
+          }}
+          src={user.avatar ? imageUrlFormatter(user.avatar) : "not-exist"}
+          alt={user.name}
+        />
+        <Typography>{user.name}</Typography>
+      </Box>
+      {show && <Typography>{user.studentId}</Typography>}
     </Box>
   );
 };
@@ -312,17 +330,19 @@ const ClassMemberPage = () => {
           </Typography>
         </Box>
       </Box>
-      <Box
-        className="df aic "
-        p={2}
-        style={{ background: "#e8e8e8", cursor: "pointer" }}
-        onClick={() => {
-          inputRef.current?.click();
-        }}
-      >
-        <Add />
-        <Typography>Upload Student List</Typography>
-      </Box>
+      {user._id == info?.owner._id && (
+        <Box
+          className="df aic "
+          p={2}
+          style={{ background: "#e8e8e8", cursor: "pointer" }}
+          onClick={() => {
+            inputRef.current?.click();
+          }}
+        >
+          <Add />
+          <Typography>Upload Student List</Typography>
+        </Box>
+      )}
       {info?.participants?.map((user) => {
         return <MemberItem key={user.id} user={user} />;
       })}
@@ -341,6 +361,19 @@ const ClassMemberPage = () => {
         ref={inputRef}
         onChange={uploadFile}
       />
+      {user._id == info?.owner._id && (
+        <Box
+          className="df"
+          style={{ justifyContent: "end", cursor: "pointer" }}
+          mt={2}
+        >
+          <ExportExcel
+            fileName="ClassMember"
+            data={[["FullName", "StudentId"]]}
+            title="Template"
+          />
+        </Box>
+      )}
     </ClassLayout>
   );
 };
