@@ -17,6 +17,7 @@
     "axios": "^0.24.0",
     "core-js": "^3.19.0",
     "file-loader": "^6.2.0",
+    "file-saver": "^2.0.5",
     "formik": "^2.2.9",
     "lodash": "^4.17.21",
     "node-sass": "^6.0.1",
@@ -32,6 +33,7 @@
     "web-vitals": "^1.0.1",
     "webpack": "^5.59.1",
     "webpack-cli": "^4.9.1",
+    "xlsx": "^0.17.4",
     "yup": "^0.32.11"
   },
   "scripts": {

@@ -14,10 +14,19 @@ import { useSelector } from "react-redux";
 import ClassLayout from "../../../components/layout/ClassLayout";
 import { imageUrlFormatter } from "~/utils/stringUtils";
 import { FileDownload } from "@mui/icons-material";
+import * as FileSaver from "file-saver";
+import * as XLSX from "xlsx";
+import { ExportExcel } from "../../../components/common/ExportExcel";
 
 const GradePage = () => {
   const { info } = useSelector((state) => state.classes);
   const { user } = useSelector((state) => state.auth);
+  console.log([
+    (info.gradeStructure || []).map((item) => `${item.name} : ${item.point}`),
+    ...(info.participants || []).map((student) =>
+      (info.gradeStructure || []).map((item) => 2)
+    ),
+  ]);
   return (
     <ClassLayout maxWidth={"md"}>
       <TableContainer>
@@ -67,20 +76,23 @@ const GradePage = () => {
           style={{ justifyContent: "end", cursor: "pointer" }}
           mt={2}
         >
-          <Box
-            className="df"
-            p={2}
-            style={{
-              border: "1px solid #1967d2",
-              borderRadius: 8,
-            }}
-          >
-            <FileDownload style={{ color: "#1967d2" }} />
-            <Box width={24} />
-            <Typography style={{ fontWeight: 600, color: "#1967d2" }}>
-              Download
-            </Typography>
-          </Box>
+          <ExportExcel
+            fileName="GradeTable"
+            data={[
+              [
+                ...(info.gradeStructure || []).map(
+                  (item) => `${item.name} : ${item.point}`
+                ),
+                `Total Grade: ${info.gradeStructure
+                  .map((item) => item.point)
+                  .reduce((a, b) => a + b, 0)}`,
+              ],
+              ...(info.participants || []).map((student) => [
+                ...(info.gradeStructure || []).map((item) => 2),
+                4,
+              ]),
+            ]}
+          />
         </Box>
       )}
     </ClassLayout>

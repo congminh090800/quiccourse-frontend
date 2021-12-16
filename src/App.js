@@ -1,6 +1,6 @@
 import Login from "~/pages/Login";
 import Dashboard from "~/pages/Dashboard";
-import { Router, Route, Routes } from "react-router-dom/BrowserRouter";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import AuthRoute from "~/components/common/AuthRoute";
 import UploadButtons from "./components/classes/UploadButton";
 import ClassPage from "./pages/Class";
@@ -14,6 +14,7 @@ import { GlobalActions } from "./store/global";
 import ParticipatingCoursePage from "./pages/courses/participate";
 import TeacherParticipatingCoursePage from "./pages/courses/teacher";
 import ClassWorkPage from "./pages/Class/classwork";
+import GradePage from "./pages/Class/grades";
 
 function App() {
   const { snackbarSuccess, snackbarError } = useSelector(
@@ -24,7 +25,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Routes>
+        <Switch>
           <AuthRoute exact path={["/", "/classes"]}>
             <Dashboard />
           </AuthRoute>
@@ -33,6 +34,9 @@ function App() {
           </AuthRoute>
           <AuthRoute path="/classes/:code/classwork" exact>
             <ClassWorkPage />
+          </AuthRoute>
+          <AuthRoute path="/classes/:code/grades" exact>
+            <GradePage />
           </AuthRoute>
 
           <AuthRoute path="/classes/:code/member">
@@ -53,7 +57,7 @@ function App() {
           <Route path="/signup">
             <SignUp />
           </Route>
-        </Routes>
+        </Switch>
         <Snackbar
           open={!!snackbarSuccess}
           autoHideDuration={6000}
