@@ -16,9 +16,9 @@ const ClassInfo = () => {
       <img
         alt="class-logo"
         src={
-          String(info.backgroundImg).length > 2
-            ? `${env.apiUrl}api/images/${info.backgroundImg}`
-            : loadCover(Number(info.backgroundImg))
+          String(info?.backgroundImg).length > 2
+            ? `${env.apiUrl}api/images/${info?.backgroundImg}`
+            : loadCover(Number(info?.backgroundImg))
         }
         style={{
           height: 240,
@@ -45,8 +45,8 @@ const ClassInfo = () => {
         }}
       >
         <Box>
-          <Typography variant="h3">{info.name}</Typography>
-          <Typography variant="h6">{info.subject || "-"}</Typography>
+          <Typography variant="h3">{info?.name}</Typography>
+          <Typography variant="h6">{info?.subject || "-"}</Typography>
         </Box>
         <IconButton
           style={{
@@ -88,7 +88,7 @@ const ClassPage = () => {
   const { info } = useSelector((state) => state.classes);
   const copyToClipboard = async () => {
     try {
-      await navigator.clipboard.writeText(info.code);
+      await navigator.clipboard.writeText(info?.code);
     } catch (err) {
       console.log("copy failed", err);
     }
@@ -126,7 +126,7 @@ const ClassPage = () => {
                 marginTop: "8px",
               }}
             >
-              {info.code}
+              {info?.code}
               <IconButton onClick={copyToClipboard} sx={{ marginLeft: "8px" }}>
                 <ContentCopy
                   sx={{

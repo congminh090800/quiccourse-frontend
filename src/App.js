@@ -1,6 +1,6 @@
 import Login from "~/pages/Login";
 import Dashboard from "~/pages/Dashboard";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Router, Route, Routes } from "react-router-dom/BrowserRouter";
 import AuthRoute from "~/components/common/AuthRoute";
 import UploadButtons from "./components/classes/UploadButton";
 import ClassPage from "./pages/Class";
@@ -24,7 +24,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Switch>
+        <Routes>
           <AuthRoute exact path={["/", "/classes"]}>
             <Dashboard />
           </AuthRoute>
@@ -53,7 +53,7 @@ function App() {
           <Route path="/signup">
             <SignUp />
           </Route>
-        </Switch>
+        </Routes>
         <Snackbar
           open={!!snackbarSuccess}
           autoHideDuration={6000}

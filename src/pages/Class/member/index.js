@@ -15,7 +15,7 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import ClassLayout from "../../../components/layout/ClassLayout";
 import * as stringUtils from "~/utils/stringUtils";
 import { useDispatch, useSelector } from "react-redux";
-import { AddCircle } from "@mui/icons-material";
+import { Add, AddCircle } from "@mui/icons-material";
 import endpoints from "~/constants/endpoints";
 import LoadingButton from "@mui/lab/LoadingButton";
 import httpAuthorization from "~/utils/httpAuthorization";
@@ -25,7 +25,7 @@ import { imageUrlFormatter } from "~/utils/stringUtils";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import * as message from "~/utils/validateRuleMessages";
-import { Snackbar, Alert } from '@mui/material';
+import { Snackbar, Alert } from "@mui/material";
 
 const useStyle = makeStyles(() => ({
   iconButton: {
@@ -223,11 +223,17 @@ const ClassMemberPage = () => {
   const { user } = useSelector((state) => state.auth);
   const [dialogVariant, setDialogVariant] = useState("");
   const [message, setMessage] = useState(null);
+  const inputRef = React.useRef(null);
 
   const isOwner = info.owner._id === user._id;
+
+  const uploadFile = (e) => {
+    console.log(e.target.files);
+  };
+
   return (
     <ClassLayout maxWidth={"md"} style={{ width: 808 }}>
-      {user.studentId &&
+      {user.studentId && (
         <Box
           className="df jcsb aic"
           px={2}
@@ -235,11 +241,22 @@ const ClassMemberPage = () => {
           pb={1}
           style={{ borderBottom: "1px solid #1967d2" }}
         >
-          <Typography style={{ color: "#1967d2", fontSize: "1.5rem" }}>Student ID: {user.studentId}</Typography>
-        </Box>}
-      <Snackbar open={message !== null} autoHideDuration={2000} onClose={() => setMessage(null)}>
-        <Alert onClose={() => setMessage(null)} severity={message?.startsWith('#') ? 'error' : 'success'} sx={{ width: '100%' }}>
-          {message?.startsWith('#') ? message.substring(1) : message}
+          <Typography style={{ color: "#1967d2", fontSize: "1.5rem" }}>
+            Student ID: {user.studentId}
+          </Typography>
+        </Box>
+      )}
+      <Snackbar
+        open={message !== null}
+        autoHideDuration={2000}
+        onClose={() => setMessage(null)}
+      >
+        <Alert
+          onClose={() => setMessage(null)}
+          severity={message?.startsWith("#") ? "error" : "success"}
+          sx={{ width: "100%" }}
+        >
+          {message?.startsWith("#") ? message.substring(1) : message}
         </Alert>
       </Snackbar>
       <Box
@@ -267,11 +284,9 @@ const ClassMemberPage = () => {
           </Typography>
         </Box>
       </Box>
-      {
-        [info.owner, ...info.teachers].map((user) => {
-          return <MemberItem key={user.id} user={user} />;
-        })
-      }
+      {[info.owner, ...info.teachers].map((user) => {
+        return <MemberItem key={user.id} user={user} />;
+      })}
       <Box
         className="df jcsb aic"
         px={2}
@@ -297,23 +312,36 @@ const ClassMemberPage = () => {
           </Typography>
         </Box>
       </Box>
-      {
-        info?.participants?.map((user) => {
-          return <MemberItem key={user.id} user={user} />;
-        })
-      }
-      {
-        dialogVariant && (
-          <InviteMemberDialog
-            open={!!dialogVariant}
-            handleClose={() => {
-              setDialogVariant(null);
-            }}
-            variant={dialogVariant}
-          />
-        )
-      }
-    </ClassLayout >
+      <Box
+        className="df aic "
+        p={2}
+        style={{ background: "#e8e8e8", cursor: "pointer" }}
+        onClick={() => {
+          inputRef.current?.click();
+        }}
+      >
+        <Add />
+        <Typography>Upload Student List</Typography>
+      </Box>
+      {info?.participants?.map((user) => {
+        return <MemberItem key={user.id} user={user} />;
+      })}
+      {dialogVariant && (
+        <InviteMemberDialog
+          open={!!dialogVariant}
+          handleClose={() => {
+            setDialogVariant(null);
+          }}
+          variant={dialogVariant}
+        />
+      )}
+      <input
+        style={{ display: "none" }}
+        type="file"
+        ref={inputRef}
+        onChange={uploadFile}
+      />
+    </ClassLayout>
   );
 };
 

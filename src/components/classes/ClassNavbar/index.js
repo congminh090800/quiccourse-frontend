@@ -88,6 +88,17 @@ const ClassNavbar = () => {
                 People
               </Button>
             </Box>
+            <Box>
+              <Button
+                className={`nav-button ${
+                  location.pathname.split("/").pop() == "grades" ? "active" : ""
+                }`}
+                component={Link}
+                to={`/classes/${info?.code}/grades`}
+              >
+                Grades
+              </Button>
+            </Box>
           </Box>
           <AvatarPopup user={user} />
         </Toolbar>
