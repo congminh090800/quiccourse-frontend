@@ -4,16 +4,21 @@ import * as XLSX from "xlsx";
 import { Box, Typography } from "@mui/material";
 import { FileDownload } from "@mui/icons-material";
 
-export const ExportExcel = ({ data, fileName, title }) => {
+export const ExportExcel = ({ data, fileName, title, onClick, preLoad }) => {
   const fileType =
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
   const fileExtension = ".csv";
 
-  const exportToCSV = (csvData, fileName) => {
+  const exportToCSV = async (csvData, fileName) => {
+    let header = [];
+    if (preLoad) {
+      header = await preLoad();
+      var blob = new Blob([header], { type: "text/csv;charset=utf-8" });
+      FileSaver.saveAs(blob, fileName + fileExtension);
+    }
     const ws = XLSX.utils.json_to_sheet(csvData, { skipHeader: true });
     const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
     XLSX.utils.book_append_sheet(wb, ws, "No Header");
-
     const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
     const data = new Blob([excelBuffer], { type: fileType });
     FileSaver.saveAs(data, fileName + fileExtension);
@@ -27,8 +32,11 @@ export const ExportExcel = ({ data, fileName, title }) => {
         border: "1px solid #1967d2",
         borderRadius: 8,
       }}
-      onClick={() => {
-        exportToCSV(data, fileName);
+      onClick={async () => {
+        if (!onClick) exportToCSV(data, fileName);
+        else {
+          onClick();
+        }
       }}
     >
       <FileDownload style={{ color: "#1967d2" }} />

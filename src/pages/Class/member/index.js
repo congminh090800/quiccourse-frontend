@@ -41,7 +41,7 @@ const MemberItem = ({ user }) => {
       className="df aic jcsb "
       p={2}
       style={{
-        background: true ? "#e3f2fd" : "transparent",
+        background: show ? "#e3f2fd" : "transparent",
         transition: "background 0.5s ease",
       }}
       onMouseEnter={() => {
@@ -369,8 +369,12 @@ const ClassMemberPage = () => {
         >
           <ExportExcel
             fileName="ClassMember"
-            data={[["FullName", "StudentId"]]}
             title="Template"
+            preLoad={async () => {
+              return await httpAuthorization.get(
+                "/api/grade/student-list-template"
+              );
+            }}
           />
         </Box>
       )}
