@@ -13,9 +13,6 @@ import React from "react";
 import { useSelector } from "react-redux";
 import ClassLayout from "../../../components/layout/ClassLayout";
 import { imageUrlFormatter } from "~/utils/stringUtils";
-import { FileDownload } from "@mui/icons-material";
-import * as FileSaver from "file-saver";
-import * as XLSX from "xlsx";
 import { ExportExcel } from "../../../components/common/ExportExcel";
 import { useState } from "react";
 
@@ -36,8 +33,13 @@ const TableItem = ({ student }) => {
         if (student.studentId) setHover(false);
       }}
     >
-      <TableCell>
-        <Box className="df aic">
+      <TableCell style={{}}>
+        <Box
+          className="df aic"
+          style={{
+            minHeight: 52,
+          }}
+        >
           <Avatar
             src={
               student.avatar ? imageUrlFormatter(student.avatar) : "not-exist"
@@ -67,12 +69,7 @@ const TableItem = ({ student }) => {
 const GradePage = () => {
   const { info } = useSelector((state) => state.classes);
   const { user } = useSelector((state) => state.auth);
-  console.log([
-    (info.gradeStructure || []).map((item) => `${item.name} : ${item.point}`),
-    ...(info.participants || []).map((student) =>
-      (info.gradeStructure || []).map((item) => 2)
-    ),
-  ]);
+
   return (
     <ClassLayout maxWidth={"md"}>
       <TableContainer>

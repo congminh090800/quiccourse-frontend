@@ -7,7 +7,7 @@ import { FileDownload } from "@mui/icons-material";
 export const ExportExcel = ({ data, fileName, title }) => {
   const fileType =
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
-  const fileExtension = ".xlsx";
+  const fileExtension = ".csv";
 
   const exportToCSV = (csvData, fileName) => {
     const ws = XLSX.utils.json_to_sheet(csvData, { skipHeader: true });

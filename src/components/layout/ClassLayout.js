@@ -7,6 +7,7 @@ import httpAuthorization from "~/utils/httpAuthorization";
 import { useHistory, useParams } from "react-router";
 import { ClassesAction } from "../../store/class";
 import endpoints from "../../constants/endpoints";
+import { GlobalActions } from "../../store/global";
 
 const ClassLayout = ({ children, maxWidth, style }) => {
   const [loading, setLoading] = useState(false);
@@ -14,6 +15,7 @@ const ClassLayout = ({ children, maxWidth, style }) => {
   const { code } = useParams();
   const history = useHistory();
   const dispatch = useDispatch();
+  dispatch(GlobalActions.setSnackbarError(null));
   React.useEffect(() => {
     const fetchClassData = async () => {
       setLoading(true);
@@ -25,7 +27,7 @@ const ClassLayout = ({ children, maxWidth, style }) => {
         dispatch(ClassesAction.setClassInfo(result.data));
         setLoading(false);
       } catch (error) {
-        history.push("/");
+        dispatch(GlobalActions.setSnackbarError(error.message));
       }
     };
     fetchClassData();

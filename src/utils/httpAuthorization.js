@@ -13,7 +13,6 @@ http.interceptors.request.use(
   async function (config) {
     const authData = store.getState().auth;
     const accessExpired = authData?.accessExpiredAt || 0;
-    console.log(store.getState()?.auth.accessToken);
     if (Date.now() >= accessExpired) {
       try {
         const res = await httpNormal.post(endpoints.refreshToken, {
