@@ -15,7 +15,6 @@ const ClassLayout = ({ children, maxWidth, style }) => {
   const { code } = useParams();
   const history = useHistory();
   const dispatch = useDispatch();
-  dispatch(GlobalActions.setSnackbarError(null));
   React.useEffect(() => {
     const fetchClassData = async () => {
       setLoading(true);

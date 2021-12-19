@@ -58,50 +58,54 @@ function App() {
             <SignUp />
           </Route>
         </Switch>
-        <Snackbar
-          open={!!snackbarSuccess}
-          autoHideDuration={6000}
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-          onClose={(event, reason) => {
-            if (reason === "clickaway") {
-              return;
-            }
-            dispatch(GlobalActions.setSnackbarSuccess(null));
-            // setOpen(false);
-          }}
-        >
-          <Alert
-            onClose={() => {
+        {!!snackbarSuccess && (
+          <Snackbar
+            open={!!snackbarSuccess}
+            autoHideDuration={6000}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            onClose={(event, reason) => {
+              if (reason === "clickaway") {
+                return;
+              }
               dispatch(GlobalActions.setSnackbarSuccess(null));
+              // setOpen(false);
             }}
-            severity="success"
-            sx={{ width: "100%" }}
           >
-            {snackbarSuccess}
-          </Alert>
-        </Snackbar>
-        <Snackbar
-          open={!!snackbarError}
-          autoHideDuration={6000}
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-          onClose={(event, reason) => {
-            if (reason === "clickaway") {
-              return;
-            }
-            dispatch(GlobalActions.setSnackbarError(null));
-            // setOpen(false);
-          }}
-        >
-          <Alert
-            onClose={() => {
+            <Alert
+              onClose={() => {
+                dispatch(GlobalActions.setSnackbarSuccess(null));
+              }}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
+              {snackbarSuccess}
+            </Alert>
+          </Snackbar>
+        )}
+        {!!snackbarError && (
+          <Snackbar
+            open={!!snackbarError}
+            autoHideDuration={6000}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            onClose={(event, reason) => {
+              if (reason === "clickaway") {
+                return;
+              }
               dispatch(GlobalActions.setSnackbarError(null));
+              // setOpen(false);
             }}
-            severity="error"
-            sx={{ width: "100%" }}
           >
-            {snackbarError}
-          </Alert>
-        </Snackbar>
+            <Alert
+              onClose={() => {
+                dispatch(GlobalActions.setSnackbarError(null));
+              }}
+              severity="error"
+              sx={{ width: "100%" }}
+            >
+              {snackbarError}
+            </Alert>
+          </Snackbar>
+        )}
       </div>
     </Router>
   );
