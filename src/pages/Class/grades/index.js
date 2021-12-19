@@ -15,6 +15,8 @@ import ClassLayout from "../../../components/layout/ClassLayout";
 import { imageUrlFormatter } from "~/utils/stringUtils";
 import { ExportExcel } from "../../../components/common/ExportExcel";
 import { useState } from "react";
+import http from "../../../utils/httpAuthorization";
+import { FileUpload } from "@mui/icons-material";
 
 const TableItem = ({ student }) => {
   const { info } = useSelector((state) => state.classes);
@@ -105,9 +107,39 @@ const GradePage = () => {
             <ExportExcel
               fileName="TemplateGrade"
               title="Template"
-              data={[["StudentId", "Grade"]]}
+              preLoad={async () => {
+                return await http.get("/api/grade/grade-template", null, {
+                  params: {
+                    courseId: info._id,
+                    gradeComponentId,
+                  },
+                });
+              }}
             />
           </Box>
+          <Box
+            className="df"
+            style={{ justifyContent: "end", cursor: "pointer" }}
+            mt={2}
+            mr={3}
+          >
+            <Box
+              className="df"
+              p={2}
+              style={{
+                border: "1px solid #1967d2",
+                borderRadius: 8,
+              }}
+              onClick={async () => {}}
+            >
+              <FileUpload style={{ color: "#1967d2" }} />
+              <Box width={24} />
+              <Typography style={{ fontWeight: 600, color: "#1967d2" }}>
+                Upload
+              </Typography>
+            </Box>
+          </Box>
+
           <Box
             className="df"
             style={{ justifyContent: "end", cursor: "pointer" }}
