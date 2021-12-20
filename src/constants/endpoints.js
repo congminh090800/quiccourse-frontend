@@ -23,4 +23,5 @@ export default {
   findStudentMapping: (courseId) => `/api/courses/mapping/find/${courseId}`,
   createStructure: "/api/courses/grade",
   setStudentId: "/api/user/student-id",
+  checkNotification: '/api/notifications',
 };

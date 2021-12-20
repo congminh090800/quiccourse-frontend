@@ -202,6 +202,7 @@ const HeadItem = ({ item, setLoading }) => {
     formData.append("csvFile", file);
     formData.append("courseId", info._id);
     formData.append("gradeComponentId", item._id);
+    e.target.value = null;
     const result = await http.put("/api/grade/upload-grades", formData);
     setErrors(result.data.errors);
     if (result.data.errors.length > 0) {
