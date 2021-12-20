@@ -7,13 +7,14 @@ import { FileDownload } from "@mui/icons-material";
 export const ExportExcel = ({ data, fileName, title, onClick, preLoad }) => {
   const fileType =
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
-  const fileExtension = ".csv";
+  let fileExtension = ".csv";
 
   const exportToCSV = async (csvData, fileName) => {
     let header = [];
     if (preLoad) {
       header = await preLoad();
       var blob = new Blob([header], { type: "text/csv;charset=utf-8" });
+      fileExtension = ".csv";
       FileSaver.saveAs(blob, fileName + fileExtension);
     }
     const ws = XLSX.utils.json_to_sheet(csvData, { skipHeader: true });
@@ -21,6 +22,7 @@ export const ExportExcel = ({ data, fileName, title, onClick, preLoad }) => {
     XLSX.utils.book_append_sheet(wb, ws, "No Header");
     const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
     const data = new Blob([excelBuffer], { type: fileType });
+    fileExtension = ".xlsx";
     FileSaver.saveAs(data, fileName + fileExtension);
   };
 
