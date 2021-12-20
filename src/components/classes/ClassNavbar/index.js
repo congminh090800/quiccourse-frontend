@@ -131,7 +131,7 @@ const ClassNavbar = () => {
                 horizontal: "right",
               }}>
               <Paper sx={{ border: 1, borderColor: '#F6F6F6', bgcolor: 'background.paper' }}>
-                {user.notifications.map((notification) => <NotificationItem notification={notification} />)}
+                {[...(user.notifications || [])].reverse().map((notification) => <NotificationItem notification={notification} />)}
               </Paper>
             </Popover>
             <AvatarPopup user={user} />

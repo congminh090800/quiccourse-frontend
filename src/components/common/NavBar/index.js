@@ -144,7 +144,7 @@ const AutoHideNavBar = (props) => {
                   horizontal: "right",
                 }}>
                 <Paper sx={{ border: 1, borderColor: '#F6F6F6', bgcolor: 'background.paper' }}>
-                  {props.user.notifications.map((notification) => <NotificationItem notification={notification} />)}
+                  {[...(props.user.notifications || [])].reverse().map((notification) => <NotificationItem notification={notification} />)}
                 </Paper>
               </Popover>
               <AvatarPopup user={props.user} />
