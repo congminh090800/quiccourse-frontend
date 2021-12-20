@@ -145,17 +145,25 @@ const TableItem = ({ student }) => {
                 color="primary"
                 variant="contained"
                 onClick={(e) => {
-                  dispatch(
-                    ClassesAction.changeStudentPoint({
-                      ...student,
-                      point: value,
-                      gradeComponentId: open?._id,
-                    })
-                  );
-                  dispatch(
-                    GlobalActions.setSnackbarSuccess("Set point success!")
-                  );
-                  setOpen(null);
+                  if (Number(value) > open.point) {
+                    dispatch(
+                      GlobalActions.setSnackbarError(
+                        `Max point of ${open.name} is ${open.point}`
+                      )
+                    );
+                  } else {
+                    dispatch(
+                      ClassesAction.changeStudentPoint({
+                        ...student,
+                        point: value,
+                        gradeComponentId: open?._id,
+                      })
+                    );
+                    dispatch(
+                      GlobalActions.setSnackbarSuccess("Set point success!")
+                    );
+                    setOpen(null);
+                  }
                 }}
               >
                 Confirm
