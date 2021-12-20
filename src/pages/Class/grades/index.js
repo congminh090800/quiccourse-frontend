@@ -109,7 +109,7 @@ const TableItem = ({ student }) => {
         <TableCell>
           {student?.grades
             ?.map((item) => item.point)
-            .reduce((a, b) => a + b, 0)}
+            .reduce((a, b) => Number(a) + Number(b), 0)}
         </TableCell>
       </TableRow>
       {!!open && (
@@ -343,7 +343,6 @@ const GradePage = () => {
   const { info } = useSelector((state) => state.classes);
   const { user } = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(false);
-  console.log("🚀 ~ file: index.js ~ line 343 ~ GradePage ~ loading", loading);
 
   const columnToShow =
     user._id == info.owner._id
@@ -373,7 +372,10 @@ const GradePage = () => {
                   <Typography className="sb">Total Grade</Typography>
                   <Typography>{`${info.gradeStructure
                     .map((item) => item.point)
-                    .reduce((a, b) => a + b, 0)} points`}</Typography>
+                    .reduce(
+                      (a, b) => Number(a) + Number(b),
+                      0
+                    )} points`}</Typography>
                 </Box>
               </TableCell>
             </TableRow>
@@ -403,7 +405,7 @@ const GradePage = () => {
                   ),
                   `Total Grade: ${info.gradeStructure
                     .map((item) => item.point)
-                    .reduce((a, b) => a + b, 0)}`,
+                    .reduce((a, b) => Number(a) + Number(b), 0)}`,
                 ],
                 ...(info.enrolledStudents || []).map((student) => [
                   student.fullName,
@@ -416,7 +418,7 @@ const GradePage = () => {
                   ),
                   student?.grades
                     .map((item) => item.point)
-                    .reduce((a, b) => a + b, 0),
+                    .reduce((a, b) => Number(a) + Number(b), 0),
                 ]),
               ]}
             />

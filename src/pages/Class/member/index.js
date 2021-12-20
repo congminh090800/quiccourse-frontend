@@ -330,7 +330,7 @@ const ClassMemberPage = () => {
           </Typography>
         </Box>
       </Box>
-      {user._id == info?.owner._id && (
+      {/* {user._id == info?.owner._id && (
         <Box
           className="df aic "
           p={2}
@@ -342,7 +342,7 @@ const ClassMemberPage = () => {
           <Add />
           <Typography>Upload Student List</Typography>
         </Box>
-      )}
+      )} */}
       {info?.participants?.map((user) => {
         return <MemberItem key={user.id} user={user} />;
       })}
@@ -361,7 +361,7 @@ const ClassMemberPage = () => {
         ref={inputRef}
         onChange={uploadFile}
       />
-      {user._id == info?.owner._id && (
+      {/* {user._id == info?.owner._id && (
         <Box
           className="df"
           style={{ justifyContent: "end", cursor: "pointer" }}
@@ -377,7 +377,7 @@ const ClassMemberPage = () => {
             }}
           />
         </Box>
-      )}
+      )} */}
     </ClassLayout>
   );
 };
