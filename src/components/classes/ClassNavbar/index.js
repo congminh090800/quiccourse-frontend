@@ -14,12 +14,25 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import AvatarPopup from "../../common/NavBar/AvatarPopup";
 import "./index.scss";
+import Badge from '@mui/material/Badge';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import { Popper, Paper } from '@mui/material'
+import NotificationItem from "./NotificationItem";
 
 const ClassNavbar = () => {
   const { user } = useSelector((state) => state.auth);
   const { info } = useSelector((state) => state.classes);
   const history = useHistory();
   const location = useLocation();
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(anchorEl ? null : event.currentTarget);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popper' : undefined;
 
   return (
     <Box>
@@ -53,11 +66,10 @@ const ClassNavbar = () => {
           >
             <Box>
               <Button
-                className={`nav-button ${
-                  location.pathname.split("/").pop() == info?.code
-                    ? "active"
-                    : ""
-                }`}
+                className={`nav-button ${location.pathname.split("/").pop() == info?.code
+                  ? "active"
+                  : ""
+                  }`}
                 component={Link}
                 to={`/classes/${info?.code}`}
               >
@@ -66,11 +78,10 @@ const ClassNavbar = () => {
             </Box>
             <Box>
               <Button
-                className={`nav-button ${
-                  location.pathname.split("/").pop() == "classwork"
-                    ? "active"
-                    : ""
-                }`}
+                className={`nav-button ${location.pathname.split("/").pop() == "classwork"
+                  ? "active"
+                  : ""
+                  }`}
                 component={Link}
                 to={`/classes/${info?.code}/classwork`}
               >
@@ -79,9 +90,8 @@ const ClassNavbar = () => {
             </Box>
             <Box>
               <Button
-                className={`nav-button ${
-                  location.pathname.split("/").pop() == "member" ? "active" : ""
-                }`}
+                className={`nav-button ${location.pathname.split("/").pop() == "member" ? "active" : ""
+                  }`}
                 component={Link}
                 to={`/classes/${info?.code}/member`}
               >
@@ -90,9 +100,8 @@ const ClassNavbar = () => {
             </Box>
             <Box>
               <Button
-                className={`nav-button ${
-                  location.pathname.split("/").pop() == "grades" ? "active" : ""
-                }`}
+                className={`nav-button ${location.pathname.split("/").pop() == "grades" ? "active" : ""
+                  }`}
                 component={Link}
                 to={`/classes/${info?.code}/grades`}
               >
@@ -100,7 +109,19 @@ const ClassNavbar = () => {
               </Button>
             </Box>
           </Box>
-          <AvatarPopup user={user} />
+          <Box>
+            <Button onClick={handleClick}>
+              <Badge badgeContent={user.notifications.filter(e => !e.seen).length} color="primary" style={{ margin: 16 }} >
+                <NotificationsIcon color="action" />
+              </Badge>
+            </Button>
+            <Popper id={id} open={open} anchorEl={anchorEl} placement="top-end">
+              <Paper sx={{ border: 1, borderColor: '#F6F6F6', bgcolor: 'background.paper' }}>
+                {user.notifications.map((notification) => <NotificationItem notification={notification} />)}
+              </Paper>
+            </Popper>
+            <AvatarPopup user={user} />
+          </Box>
         </Toolbar>
       </AppBar>
     </Box>
