@@ -194,6 +194,7 @@ const HeadItem = ({ item, setLoading }) => {
     formData.append("csvFile", file);
     formData.append("courseId", info._id);
     formData.append("gradeComponentId", item._id);
+    e.target.value = null;
     const result = await http.put("/api/grade/upload-grades", formData);
     const newCourseDetail = await http.get(endpoints.getClassInfo(info.code));
 
