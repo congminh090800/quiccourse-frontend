@@ -43,6 +43,15 @@ const TableItem = ({ student }) => {
           (structure) => structure.isFinalized
         );
 
+  React.useEffect(() => {
+    if (open != null) {
+      setValue(
+        student.grades.find((grade) => grade.gradeComponentId == open._id)
+          ?.point || 0
+      );
+    }
+  }, [open]);
+
   return (
     <>
       <TableRow
@@ -159,7 +168,7 @@ const TableItem = ({ student }) => {
   );
 };
 
-const HeadItem = ({ item }) => {
+const HeadItem = ({ item, setLoading }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { info } = useSelector((state) => state.classes);
   const { user } = useSelector((state) => state.auth);
@@ -222,6 +231,8 @@ const HeadItem = ({ item }) => {
         >
           <MenuItem
             onClick={async () => {
+              setLoading(true);
+
               try {
                 const template = await http.get(
                   `/api/grade/grade-template?courseId=${info?._id}&gradeComponentId=${item._id}`
@@ -234,6 +245,7 @@ const HeadItem = ({ item }) => {
               } catch (error) {
                 dispatch(GlobalActions.setSnackbarError(error.message));
               }
+              setLoading(false);
             }}
           >
             Download Template
@@ -249,6 +261,8 @@ const HeadItem = ({ item }) => {
           </MenuItem>
           <MenuItem
             onClick={async () => {
+              setLoading(true);
+
               try {
                 if (!item.isFinalized) {
                   const result = await http.patch(
@@ -279,12 +293,15 @@ const HeadItem = ({ item }) => {
               } catch (error) {
                 dispatch(GlobalActions.setSnackbarError(error.message));
               }
+              setLoading(false);
             }}
           >
             {`${item.isFinalized ? "Unfinalize" : "Finalize"}`}
           </MenuItem>
           <MenuItem
             onClick={async () => {
+              setLoading(true);
+
               try {
                 const result = await http.put(`/api/grade/finalize-grades`, {
                   courseId: info._id,
@@ -311,6 +328,7 @@ const HeadItem = ({ item }) => {
               } catch (error) {
                 dispatch(GlobalActions.setSnackbarError(error.message));
               }
+              setLoading(false);
             }}
           >
             Return all
@@ -324,6 +342,8 @@ const HeadItem = ({ item }) => {
 const GradePage = () => {
   const { info } = useSelector((state) => state.classes);
   const { user } = useSelector((state) => state.auth);
+  const [loading, setLoading] = useState(false);
+  console.log("🚀 ~ file: index.js ~ line 343 ~ GradePage ~ loading", loading);
 
   const columnToShow =
     user._id == info.owner._id
@@ -333,14 +353,20 @@ const GradePage = () => {
         );
 
   return (
-    <ClassLayout maxWidth={"md"}>
+    <ClassLayout maxWidth={"md"} customLoading={loading}>
       <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell style={{ minWidth: 200 }}>Student name</TableCell>
               {columnToShow.map((item) => {
-                return <HeadItem item={item} key={item._id} />;
+                return (
+                  <HeadItem
+                    item={item}
+                    key={item._id}
+                    setLoading={setLoading}
+                  />
+                );
               })}
               <TableCell style={{ minWidth: 175 }}>
                 <Box className="df fdc">

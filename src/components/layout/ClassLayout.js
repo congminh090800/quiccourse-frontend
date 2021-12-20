@@ -9,7 +9,7 @@ import { ClassesAction } from "../../store/class";
 import endpoints from "../../constants/endpoints";
 import { GlobalActions } from "../../store/global";
 
-const ClassLayout = ({ children, maxWidth, style }) => {
+const ClassLayout = ({ children, maxWidth, style, customLoading }) => {
   const [loading, setLoading] = useState(false);
   const { info } = useSelector((state) => state.classes);
   const { code } = useParams();
@@ -41,7 +41,7 @@ const ClassLayout = ({ children, maxWidth, style }) => {
         flexDirection: "column",
       }}
     >
-      <ClassNavbar loading={loading} />
+      <ClassNavbar loading={loading || customLoading} />
       {!info || loading ? (
         <LinearProgress sx={{ width: "100%", margin: "64px auto 0" }} />
       ) : (
