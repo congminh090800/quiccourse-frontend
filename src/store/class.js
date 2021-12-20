@@ -25,6 +25,24 @@ export const classes = createSlice({
         (data) => data._id !== payload._id
       );
     },
+    changeStudentPoint: (state, { payload }) => {
+      state.info.enrolledStudents.map((student) => {
+        return student.studentId == payload.studentId
+          ? student.grades.find(
+              (grade) => grade.gradeComponentId == payload.gradeComponentId
+            )
+            ? student.grades.map((grade) =>
+                grade.gradeComponentId == payload.gradeComponentId
+                  ? (grade.point = payload.point)
+                  : grade
+              )
+            : student.grades.push({
+                point: payload.point,
+                gradeComponentId: payload.gradeComponentId,
+              })
+          : student;
+      });
+    },
   },
   extraReducers: (builder) => {},
 });
