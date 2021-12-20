@@ -4,6 +4,7 @@ import {
   IconButton,
   Toolbar,
   Typography,
+  Popover
 } from "@material-ui/core";
 import { Box } from "@material-ui/system";
 import { Menu } from "@mui/icons-material";
@@ -16,7 +17,7 @@ import AvatarPopup from "../../common/NavBar/AvatarPopup";
 import "./index.scss";
 import Badge from '@mui/material/Badge';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { Popper, Paper } from '@mui/material'
+import { Paper } from '@mui/material'
 import NotificationItem from "./NotificationItem";
 
 const ClassNavbar = () => {
@@ -29,6 +30,10 @@ const ClassNavbar = () => {
 
   const handleClick = (event) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
   const open = Boolean(anchorEl);
@@ -115,11 +120,20 @@ const ClassNavbar = () => {
                 <NotificationsIcon color="action" />
               </Badge>
             </Button>
-            <Popper id={id} open={open} anchorEl={anchorEl} placement="top-end">
+            <Popover id={id} open={open} anchorEl={anchorEl}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}>
               <Paper sx={{ border: 1, borderColor: '#F6F6F6', bgcolor: 'background.paper' }}>
                 {user.notifications.map((notification) => <NotificationItem notification={notification} />)}
               </Paper>
-            </Popper>
+            </Popover>
             <AvatarPopup user={user} />
           </Box>
         </Toolbar>
