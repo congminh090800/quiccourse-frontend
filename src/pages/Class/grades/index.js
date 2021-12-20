@@ -280,7 +280,12 @@ const HeadItem = ({ item, setLoading }) => {
                       gradeComponentId: item._id,
                     }
                   );
-                  dispatch(ClassesAction.setClassInfo(result.data));
+                  dispatch(
+                    ClassesAction.finalizeUpdate({
+                      enrolledStudents: result.data.enrolledStudents,
+                      gradeStructure: result.data.gradeStructure,
+                    })
+                  );
                   dispatch(
                     GlobalActions.setSnackbarSuccess("Finalize Success")
                   );
@@ -292,7 +297,12 @@ const HeadItem = ({ item, setLoading }) => {
                       gradeComponentId: item._id,
                     }
                   );
-                  dispatch(ClassesAction.setClassInfo(result.data));
+                  dispatch(
+                    ClassesAction.finalizeUpdate({
+                      enrolledStudents: result.data.enrolledStudents,
+                      gradeStructure: result.data.gradeStructure,
+                    })
+                  );
                   dispatch(
                     GlobalActions.setSnackbarSuccess("Unfinalize Success")
                   );

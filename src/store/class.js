@@ -43,6 +43,10 @@ export const classes = createSlice({
           : student;
       });
     },
+    finalizeUpdate: (state, { payload }) => {
+      state.info.enrolledStudents = payload.enrolledStudents;
+      state.info.gradeStructure = payload.gradeStructure;
+    },
   },
   extraReducers: (builder) => {},
 });
