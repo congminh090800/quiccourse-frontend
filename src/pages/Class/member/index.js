@@ -54,7 +54,7 @@ const MemberItem = ({ user }) => {
       <Box className="df aic ">
         <Avatar
           sx={{
-            bgcolor: stringUtils.stringToColor(user.name),
+            bgcolor: stringUtils.stringToColor(user?.name || ""),
             width: 32,
             height: 32,
             fontSize: 16,
