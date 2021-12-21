@@ -23,7 +23,7 @@ import { ExportExcel } from "../../../components/common/ExportExcel";
 import { useState } from "react";
 import { ClassesAction } from "../../../store/class";
 import http from "../../../utils/httpAuthorization";
-import { FileUpload, MoreVert } from "@mui/icons-material";
+import { FileUpload, MoreVert, Add } from "@mui/icons-material";
 import FileSaver from "file-saver";
 import endpoints from "../../../constants/endpoints";
 import { GlobalActions } from "../../../store/global";
@@ -40,8 +40,8 @@ const TableItem = ({ student }) => {
     user._id == info.owner._id
       ? info.gradeStructure || []
       : (info.gradeStructure || []).filter(
-          (structure) => structure.isFinalized
-        );
+        (structure) => structure.isFinalized
+      );
 
   React.useEffect(() => {
     if (open != null) {
@@ -206,9 +206,8 @@ const HeadItem = ({ item, setLoading }) => {
       <TableCell style={{ minWidth: 175 }}>
         <Box className="df jcsb aic">
           <Box className="df fdc">
-            <Typography className="sb">{`${item.name} ${
-              item.isFinalized ? "(*)" : ""
-            }`}</Typography>
+            <Typography className="sb">{`${item.name} ${item.isFinalized ? "(*)" : ""
+              }`}</Typography>
 
             <Typography>{`${item.point} points`}</Typography>
           </Box>
@@ -362,16 +361,47 @@ const GradePage = () => {
   const { info } = useSelector((state) => state.classes);
   const { user } = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(false);
+  const inputRef = React.useRef(null);
 
   const columnToShow =
     user._id == info.owner._id
       ? info.gradeStructure || []
       : (info.gradeStructure || []).filter(
-          (structure) => structure.isFinalized
-        );
+        (structure) => structure.isFinalized
+      );
 
   return (
     <ClassLayout maxWidth={"md"} customLoading={loading}>
+      {user._id == info?.owner._id && (
+        <Box
+          className="df aic "
+          p={2}
+          style={{ background: "#e8e8e8", cursor: "pointer" }}
+          onClick={() => {
+            inputRef.current?.click();
+          }}
+        >
+          <Add />
+          <Typography>Upload Student List</Typography>
+        </Box>
+      )}
+      {user._id == info?.owner._id && (
+        <Box
+          className="df"
+          style={{ justifyContent: "end", cursor: "pointer" }}
+          mt={2}
+        >
+          <ExportExcel
+            fileName="ClassMember"
+            title="Template"
+            preLoad={async () => {
+              return await httpAuthorization.get(
+                "/api/grade/student-list-template"
+              );
+            }}
+          />
+        </Box>
+      )}
       <TableContainer>
         <Table>
           <TableHead>

@@ -134,6 +134,8 @@ const AutoHideNavBar = (props) => {
                 </Badge>
               </Button>
               <Popover id={id} open={openNoti} anchorEl={anchorElNoti}
+                PaperProps={{ style: { maxHeight: '300px', overflowY: 'auto' } }}
+                disableScrollLock
                 onClose={handleCloseNoti}
                 anchorOrigin={{
                   vertical: "bottom",

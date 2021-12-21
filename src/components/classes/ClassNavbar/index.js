@@ -121,6 +121,8 @@ const ClassNavbar = () => {
               </Badge>
             </Button>
             <Popover id={id} open={open} anchorEl={anchorEl}
+              PaperProps={{ style: { maxHeight: '300px', overflowY: 'auto' } }}
+              disableScrollLock
               onClose={handleClose}
               anchorOrigin={{
                 vertical: "bottom",
