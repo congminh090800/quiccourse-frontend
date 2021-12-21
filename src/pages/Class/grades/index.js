@@ -30,6 +30,8 @@ import { FileUpload, MoreVert, Add } from "@mui/icons-material";
 import FileSaver from "file-saver";
 import endpoints from "../../../constants/endpoints";
 import { GlobalActions } from "../../../store/global";
+import httpAuthorization from "~/utils/httpAuthorization";
+
 const TableItem = ({ student }) => {
   const { info } = useSelector((state) => state.classes);
   const { user } = useSelector((state) => state.auth);
@@ -39,9 +41,9 @@ const TableItem = ({ student }) => {
   const [value, setValue] = useState(0);
 
   const columnToShow =
-    user._id == info.owner._id
-      ? info.gradeStructure || []
-      : (info.gradeStructure || []).filter(
+    user._id == info?.owner._id
+      ? info?.gradeStructure || []
+      : (info?.gradeStructure || []).filter(
         (structure) => structure.isFinalized
       );
 
@@ -99,7 +101,7 @@ const TableItem = ({ student }) => {
             <TableCell
               style={{ cursor: "pointer" }}
               onClick={() => {
-                if (user._id == info.owner._id) setOpen(item);
+                if (user._id == info?.owner._id) setOpen(item);
               }}
             >
               {student?.grades?.find(
@@ -201,7 +203,7 @@ const HeadItem = ({ item, setLoading }) => {
       const file = e.target.files[0];
       const formData = new FormData();
       formData.append("csvFile", file);
-      formData.append("courseId", info._id);
+      formData.append("courseId", info?._id);
       formData.append("gradeComponentId", item._id);
       e.target.value = null;
       const result = await http.put("/api/grade/upload-grades", formData);
@@ -209,7 +211,7 @@ const HeadItem = ({ item, setLoading }) => {
       if (result.data.errors.length > 0) {
         setOpenErrs(true);
       }
-      const newCourseDetail = await http.get(endpoints.getClassInfo(info.code));
+      const newCourseDetail = await http.get(endpoints.getClassInfo(info?.code));
       dispatch(GlobalActions.setSnackbarSuccess("Upload grade success"));
       dispatch(ClassesAction.setClassInfo(newCourseDetail.data));
     } catch (err) {
@@ -237,10 +239,9 @@ const HeadItem = ({ item, setLoading }) => {
           <Box className="df fdc">
             <Typography className="sb">{`${item.name} ${item.isFinalized ? "(*)" : ""
               }`}</Typography>
-
             <Typography>{`${item.point} points`}</Typography>
           </Box>
-          {user._id == info.owner._id && (
+          {user._id == info?.owner._id && (
             <IconButton onClick={(event) => setAnchorEl(event.currentTarget)}>
               <MoreVert />
             </IconButton>
@@ -305,7 +306,7 @@ const HeadItem = ({ item, setLoading }) => {
                   const result = await http.patch(
                     `/api/grade/finalize-column`,
                     {
-                      courseId: info._id,
+                      courseId: info?._id,
                       gradeComponentId: item._id,
                     }
                   );
@@ -322,7 +323,7 @@ const HeadItem = ({ item, setLoading }) => {
                   const result = await http.patch(
                     `/api/grade/unfinalize-column`,
                     {
-                      courseId: info._id,
+                      courseId: info?._id,
                       gradeComponentId: item._id,
                     }
                   );
@@ -348,12 +349,11 @@ const HeadItem = ({ item, setLoading }) => {
           <MenuItem
             onClick={async () => {
               setLoading(true);
-
               try {
                 const result = await http.put(`/api/grade/finalize-grades`, {
-                  courseId: info._id,
+                  courseId: info?._id,
                   gradeComponentId: item._id,
-                  listPoints: info.enrolledStudents
+                  listPoints: info?.enrolledStudents
                     .filter((student) =>
                       student.grades.find(
                         (grade) => grade.gradeComponentId == item._id
@@ -393,44 +393,48 @@ const GradePage = () => {
   const inputRef = React.useRef(null);
 
   const columnToShow =
-    user._id == info.owner._id
-      ? info.gradeStructure || []
-      : (info.gradeStructure || []).filter(
+    user._id == info?.owner._id
+      ? info?.gradeStructure || []
+      : (info?.gradeStructure || []).filter(
         (structure) => structure.isFinalized
       );
 
   return (
     <ClassLayout maxWidth={"md"} customLoading={loading}>
-      {user._id == info?.owner._id && (
-        <Box
-          className="df aic "
-          p={2}
-          style={{ background: "#e8e8e8", cursor: "pointer" }}
-          onClick={() => {
-            inputRef.current?.click();
-          }}
-        >
-          <Add />
-          <Typography>Upload Student List</Typography>
-        </Box>
-      )}
-      {user._id == info?.owner._id && (
-        <Box
-          className="df"
-          style={{ justifyContent: "end", cursor: "pointer" }}
-          mt={2}
-        >
-          <ExportExcel
-            fileName="ClassMember"
-            title="Template"
-            preLoad={async () => {
-              return await httpAuthorization.get(
-                "/api/grade/student-list-template"
-              );
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        {user._id == info?.owner._id && (
+          <Box
+            className="df aic "
+            style={{ justifyContent: "end", cursor: "pointer" }}
+            mt={2}
+            onClick={() => {
+              inputRef.current?.click();
             }}
-          />
-        </Box>
-      )}
+          >
+            <Button
+              variant="outlined">
+              Upload student list
+            </Button>
+          </Box>
+        )}
+        {user._id == info?.owner._id && (
+          <Box
+            className="df"
+            style={{ justifyContent: "end", cursor: "pointer" }}
+            mt={2}
+          >
+            <ExportExcel
+              fileName="ClassMember"
+              title="Template"
+              preLoad={async () => {
+                return await httpAuthorization.get(
+                  "/api/grade/student-list-template"
+                );
+              }}
+            />
+          </Box>
+        )}
+      </div>
       <TableContainer>
         <Table>
           <TableHead>
@@ -448,7 +452,7 @@ const GradePage = () => {
               <TableCell style={{ minWidth: 175 }}>
                 <Box className="df fdc">
                   <Typography className="sb">Total Grade</Typography>
-                  <Typography>{`${info.gradeStructure
+                  <Typography>{`${info?.gradeStructure
                     .map((item) => item.point)
                     .reduce(
                       (a, b) => Number(a) + Number(b),
@@ -478,17 +482,17 @@ const GradePage = () => {
                 [
                   "Name",
                   "StudentId",
-                  ...(info.gradeStructure || []).map(
+                  ...(info?.gradeStructure || []).map(
                     (item) => `${item.name} : ${item.point}`
                   ),
-                  `Total Grade: ${info.gradeStructure
+                  `Total Grade: ${info?.gradeStructure
                     .map((item) => item.point)
                     .reduce((a, b) => Number(a) + Number(b), 0)}`,
                 ],
-                ...(info.enrolledStudents || []).map((student) => [
+                ...(info?.enrolledStudents || []).map((student) => [
                   student.fullName,
                   student.studentId,
-                  ...(info.gradeStructure || []).map(
+                  ...(info?.gradeStructure || []).map(
                     (item) =>
                       student?.grades?.find(
                         (grade) => grade.gradeComponentId == item._id
