@@ -5,15 +5,18 @@ import endpoints from "~/constants/endpoints";
 import httpAuthorization from "~/utils/httpAuthorization";
 import { useDispatch } from "react-redux";
 import { UPDATE_USER_NOTIFICATIONS } from "~/store/auth";
+import { useHistory } from "react-router-dom";
 
 const NotificationItem = (props) => {
     const { notification } = props;
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const handleClick = async () => {
         const result = await httpAuthorization.patch(`${endpoints.checkNotification}?notificationId=${notification._id}`);
         if (result) {
             dispatch(UPDATE_USER_NOTIFICATIONS(result.data));
+            history.push(`/classes/${notification.extendedData.courseCode}/grades`);
         }
     };
 
