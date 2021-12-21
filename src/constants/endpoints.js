@@ -24,4 +24,5 @@ export default {
   createStructure: "/api/courses/grade",
   setStudentId: "/api/user/student-id",
   checkNotification: '/api/notifications',
+  addStudentGrade: "/api/grade/add-or-update-student",
 };

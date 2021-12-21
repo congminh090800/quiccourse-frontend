@@ -31,6 +31,7 @@ import FileSaver from "file-saver";
 import endpoints from "../../../constants/endpoints";
 import { GlobalActions } from "../../../store/global";
 import httpAuthorization from "~/utils/httpAuthorization";
+import AddStudentDialog from "../../../components/classes/AddStudentDialog";
 
 const TableItem = ({ student }) => {
   const { info } = useSelector((state) => state.classes);
@@ -203,6 +204,7 @@ const HeadItem = ({ item, setLoading }) => {
   const handleCloseErrs = () => {
     setOpenErrs(false);
   };
+
   const upload = async (e) => {
     try {
       setErrors([]);
@@ -402,10 +404,19 @@ const GradePage = () => {
   const [errors, setErrors] = React.useState([]);
   const dispatch = useDispatch();
   const [openErrs, setOpenErrs] = React.useState(false);
+  const [openAddStudentDialog, setOpenAddStudentDialog] = useState(false);
 
   const handleCloseErrs = () => {
     setOpenErrs(false);
   };
+
+  const handeCloseAddStudentDialog = () => {
+    setOpenAddStudentDialog(false);
+  }
+
+  const handleOpenAddStudentDialog = () => {
+    setOpenAddStudentDialog(true);
+  }
 
   const columnToShow =
     user._id == info?.owner._id
@@ -453,6 +464,11 @@ const GradePage = () => {
           </DialogContentText>
         </DialogContent>
       </Dialog>
+      <AddStudentDialog
+        open={openAddStudentDialog}
+        onClose={handeCloseAddStudentDialog}
+        courseId={info?._id}
+      />
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         {user._id == info?.owner._id && (
           <Box
@@ -504,15 +520,28 @@ const GradePage = () => {
                 );
               })}
               <TableCell style={{ minWidth: 175 }}>
-                <Box className="df fdc">
-                  <Typography className="sb">Total Grade</Typography>
-                  <Typography>{`${info?.gradeStructure
-                    .map((item) => item.point)
-                    .reduce(
-                      (a, b) => Number(a) + Number(b),
-                      0
-                    )} points`}</Typography>
-                </Box>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Box className="df fdc">
+                    <Typography className="sb">Total Grade</Typography>
+                    <Typography>{`${info?.gradeStructure
+                      .map((item) => item.point)
+                      .reduce(
+                        (a, b) => Number(a) + Number(b),
+                        0
+                      )} points`}</Typography>
+                  </Box>
+                  {user._id == info?.owner._id && <Box
+                    className="df aic "
+                    style={{ justifyContent: "end", cursor: "pointer" }}
+                    onClick={() => {
+                      inputRef.current?.click();
+                    }}
+                  >
+                    <IconButton aria-label="delete" size="small" onClick={handleOpenAddStudentDialog}>
+                      <Add fontSize="inherit" />
+                    </IconButton>
+                  </Box>}
+                </div>
               </TableCell>
             </TableRow>
           </TableHead>
