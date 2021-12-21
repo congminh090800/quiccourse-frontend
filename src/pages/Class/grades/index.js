@@ -44,8 +44,8 @@ const TableItem = ({ student }) => {
     user._id == info?.owner._id
       ? info?.gradeStructure || []
       : (info?.gradeStructure || []).filter(
-          (structure) => structure.isFinalized
-        );
+        (structure) => structure.isFinalized
+      );
 
   React.useEffect(() => {
     if (open != null) {
@@ -245,9 +245,8 @@ const HeadItem = ({ item, setLoading }) => {
       <TableCell style={{ minWidth: 175 }}>
         <Box className="df jcsb aic">
           <Box className="df fdc">
-            <Typography className="sb">{`${item.name} ${
-              item.isFinalized ? "(*)" : ""
-            }`}</Typography>
+            <Typography className="sb">{`${item.name} ${item.isFinalized ? "(*)" : ""
+              }`}</Typography>
             <Typography>{`${item.point} points`}</Typography>
           </Box>
           {user._id == info?.owner._id && (
@@ -400,16 +399,60 @@ const GradePage = () => {
   const { user } = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(false);
   const inputRef = React.useRef(null);
+  const [errors, setErrors] = React.useState([]);
+  const dispatch = useDispatch();
+  const [openErrs, setOpenErrs] = React.useState(false);
+
+  const handleCloseErrs = () => {
+    setOpenErrs(false);
+  };
 
   const columnToShow =
     user._id == info?.owner._id
       ? info?.gradeStructure || []
       : (info?.gradeStructure || []).filter(
-          (structure) => structure.isFinalized
-        );
+        (structure) => structure.isFinalized
+      );
+
+  const uploadStudentList = async (e) => {
+    try {
+      setErrors([]);
+      const file = e.target.files[0];
+      const formData = new FormData();
+      formData.append("csvFile", file);
+      formData.append("courseId", info?._id);
+      e.target.value = null;
+      const result = await http.put("/api/grade/upload-student-list", formData);
+      setErrors(result.data.errors);
+      console.log('result', result);
+      if (result.data.errors.length > 0) {
+        setOpenErrs(true);
+      }
+      const newCourseDetail = await http.get(
+        endpoints.getClassInfo(info?.code)
+      );
+      dispatch(GlobalActions.setSnackbarSuccess("Upload grade success"));
+      dispatch(ClassesAction.setClassInfo(newCourseDetail.data));
+    } catch (err) {
+      console.log(err);
+      dispatch(GlobalActions.setSnackbarError("Error occured"));
+    }
+  };
 
   return (
     <ClassLayout maxWidth={"md"} customLoading={loading}>
+      <Dialog onClose={handleCloseErrs} open={openErrs}>
+        <DialogTitle>Error rows</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            <ul>
+              {errors.map(function (error, index) {
+                return <li key={index}>{error}</li>;
+              })}
+            </ul>
+          </DialogContentText>
+        </DialogContent>
+      </Dialog>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         {user._id == info?.owner._id && (
           <Box
@@ -420,7 +463,12 @@ const GradePage = () => {
               inputRef.current?.click();
             }}
           >
-            <Button variant="outlined">Upload student list</Button>
+            <label htmlFor="choose-file" style={{ display: 'flex', justifyContent: 'center' }}>
+              <input style={{ display: 'none' }} type="file"
+                type="file"
+                accept=".csv" id="choose-file" onChange={uploadStudentList} />
+              <Button variant="outlined" component="span">Upload student list</Button>
+            </label>
           </Box>
         )}
         {user._id == info?.owner._id && (
