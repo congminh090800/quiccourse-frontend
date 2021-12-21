@@ -510,27 +510,8 @@ const GradePage = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell style={{ minWidth: 200 }}>Student name</TableCell>
-              {columnToShow.map((item) => {
-                return (
-                  <HeadItem
-                    item={item}
-                    key={item._id}
-                    setLoading={setLoading}
-                  />
-                );
-              })}
-              <TableCell style={{ minWidth: 175 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Box className="df fdc">
-                    <Typography className="sb">Total Grade</Typography>
-                    <Typography>{`${info?.gradeStructure
-                      .map((item) => item.point)
-                      .reduce(
-                        (a, b) => Number(a) + Number(b),
-                        0
-                      )} points`}</Typography>
-                  </Box>
+              <TableCell style={{ minWidth: 200 }}>
+                <div style={{ display: 'flex', alignItems: "center" }}>
                   {user._id == info?.owner._id && <Box
                     className="df aic "
                     style={{ justifyContent: "end", cursor: "pointer" }}
@@ -542,7 +523,28 @@ const GradePage = () => {
                       <Add fontSize="inherit" />
                     </IconButton>
                   </Box>}
+                  Student name
                 </div>
+              </TableCell>
+              {columnToShow.map((item) => {
+                return (
+                  <HeadItem
+                    item={item}
+                    key={item._id}
+                    setLoading={setLoading}
+                  />
+                );
+              })}
+              <TableCell style={{ minWidth: 175 }}>
+                <Box className="df fdc">
+                  <Typography className="sb">Total Grade</Typography>
+                  <Typography>{`${info?.gradeStructure
+                    .map((item) => item.point)
+                    .reduce(
+                      (a, b) => Number(a) + Number(b),
+                      0
+                    )} points`}</Typography>
+                </Box>
               </TableCell>
             </TableRow>
           </TableHead>
