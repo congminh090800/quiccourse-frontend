@@ -196,21 +196,26 @@ const HeadItem = ({ item, setLoading }) => {
     setOpenErrs(false);
   };
   const upload = async (e) => {
-    setErrors([]);
-    const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append("csvFile", file);
-    formData.append("courseId", info._id);
-    formData.append("gradeComponentId", item._id);
-    e.target.value = null;
-    const result = await http.put("/api/grade/upload-grades", formData);
-    setErrors(result.data.errors);
-    if (result.data.errors.length > 0) {
-      setOpenErrs(true);
+    try {
+      setErrors([]);
+      const file = e.target.files[0];
+      const formData = new FormData();
+      formData.append("csvFile", file);
+      formData.append("courseId", info._id);
+      formData.append("gradeComponentId", item._id);
+      e.target.value = null;
+      const result = await http.put("/api/grade/upload-grades", formData);
+      setErrors(result.data.errors);
+      if (result.data.errors.length > 0) {
+        setOpenErrs(true);
+      }
+      const newCourseDetail = await http.get(endpoints.getClassInfo(info.code));
+      dispatch(GlobalActions.setSnackbarSuccess("Upload grade success"));
+      dispatch(ClassesAction.setClassInfo(newCourseDetail.data));
+    } catch (err) {
+      console.log(err);
+      dispatch(GlobalActions.setSnackbarError("Error occured"));
     }
-    const newCourseDetail = await http.get(endpoints.getClassInfo(info.code));
-
-    dispatch(ClassesAction.setClassInfo(newCourseDetail.data));
   };
 
   return (
