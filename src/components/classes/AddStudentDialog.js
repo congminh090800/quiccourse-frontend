@@ -13,6 +13,7 @@ import { ClassesAction } from "../../store/class";
 
 const validationSchema = Yup.object({
     fullName: Yup.string()
+        .min(3, message.min('Fullname', 3))
         .required(message.required("Fullname")),
     studentId: Yup.string()
         .min(6, message.min("Student ID", 6))
@@ -52,13 +53,16 @@ const AddStudentDialog = (props) => {
 
                             const result = await httpAuthorization.patch(endpoints.addStudentGrade, body);
 
-                            if (result) {
-                                dispatch(GlobalActions.setSnackbarSuccess("Add student succeded"));
-                                dispatch(ClassesAction.setClassInfo(result.data));
+                            if (result.status != 400) {
+                                const newCourseDetail = await httpAuthorization.get(
+                                    endpoints.getClassInfo(props.courseCode)
+                                );
+                                dispatch(GlobalActions.setSnackbarSuccess("Upload grade success"));
+                                dispatch(ClassesAction.setClassInfo(newCourseDetail.data));
                                 handleOnClose();
                             } else {
                                 handleOnClose();
-                                dispatch(GlobalActions.setSnackbarError("Error occured"));
+                                dispatch(GlobalActions.setSnackbarError(result.message));
                             }
                         } catch (e) {
                             console.log(e);

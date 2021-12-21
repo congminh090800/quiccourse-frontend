@@ -468,6 +468,7 @@ const GradePage = () => {
         open={openAddStudentDialog}
         onClose={handeCloseAddStudentDialog}
         courseId={info?._id}
+        courseCode={info?.code}
       />
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         {user._id == info?.owner._id && (
@@ -552,7 +553,7 @@ const GradePage = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      {user._id == info?.owner._id && (
+      {(
         <Box className="df " style={{ justifyContent: "end" }}>
           <Box
             className="df"
