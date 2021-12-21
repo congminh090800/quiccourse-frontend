@@ -44,8 +44,8 @@ const TableItem = ({ student }) => {
     user._id == info?.owner._id
       ? info?.gradeStructure || []
       : (info?.gradeStructure || []).filter(
-        (structure) => structure.isFinalized
-      );
+          (structure) => structure.isFinalized
+        );
 
   React.useEffect(() => {
     if (open != null) {
@@ -155,6 +155,12 @@ const TableItem = ({ student }) => {
                         `Max point of ${open.name} is ${open.point}`
                       )
                     );
+                  } else if (Number(value) < 0) {
+                    dispatch(
+                      GlobalActions.setSnackbarError(
+                        `Point of ${open.name} must not be negative`
+                      )
+                    );
                   } else {
                     dispatch(
                       ClassesAction.changeStudentPoint({
@@ -211,7 +217,9 @@ const HeadItem = ({ item, setLoading }) => {
       if (result.data.errors.length > 0) {
         setOpenErrs(true);
       }
-      const newCourseDetail = await http.get(endpoints.getClassInfo(info?.code));
+      const newCourseDetail = await http.get(
+        endpoints.getClassInfo(info?.code)
+      );
       dispatch(GlobalActions.setSnackbarSuccess("Upload grade success"));
       dispatch(ClassesAction.setClassInfo(newCourseDetail.data));
     } catch (err) {
@@ -237,8 +245,9 @@ const HeadItem = ({ item, setLoading }) => {
       <TableCell style={{ minWidth: 175 }}>
         <Box className="df jcsb aic">
           <Box className="df fdc">
-            <Typography className="sb">{`${item.name} ${item.isFinalized ? "(*)" : ""
-              }`}</Typography>
+            <Typography className="sb">{`${item.name} ${
+              item.isFinalized ? "(*)" : ""
+            }`}</Typography>
             <Typography>{`${item.point} points`}</Typography>
           </Box>
           {user._id == info?.owner._id && (
@@ -396,12 +405,12 @@ const GradePage = () => {
     user._id == info?.owner._id
       ? info?.gradeStructure || []
       : (info?.gradeStructure || []).filter(
-        (structure) => structure.isFinalized
-      );
+          (structure) => structure.isFinalized
+        );
 
   return (
     <ClassLayout maxWidth={"md"} customLoading={loading}>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
         {user._id == info?.owner._id && (
           <Box
             className="df aic "
@@ -411,10 +420,7 @@ const GradePage = () => {
               inputRef.current?.click();
             }}
           >
-            <Button
-              variant="outlined">
-              Upload student list
-            </Button>
+            <Button variant="outlined">Upload student list</Button>
           </Box>
         )}
         {user._id == info?.owner._id && (
