@@ -14,6 +14,9 @@ import {
   TableRow,
   Typography,
   Button,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
 } from "@material-ui/core";
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -27,7 +30,6 @@ import { FileUpload, MoreVert, Add } from "@mui/icons-material";
 import FileSaver from "file-saver";
 import endpoints from "../../../constants/endpoints";
 import { GlobalActions } from "../../../store/global";
-
 const TableItem = ({ student }) => {
   const { info } = useSelector((state) => state.classes);
   const { user } = useSelector((state) => state.auth);
@@ -183,26 +185,53 @@ const HeadItem = ({ item, setLoading }) => {
   const inputRef = React.useRef(null);
   const dispatch = useDispatch();
   const open = Boolean(anchorEl);
+  const [errors, setErrors] = React.useState([]);
+  const [openErrs, setOpenErrs] = React.useState(false);
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
+  const handleCloseErrs = () => {
+    setOpenErrs(false);
+  };
   const upload = async (e) => {
-    const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append("csvFile", file);
-    formData.append("courseId", info._id);
-    formData.append("gradeComponentId", item._id);
-    e.target.value = null;
-    const result = await http.put("/api/grade/upload-grades", formData);
-    const newCourseDetail = await http.get(endpoints.getClassInfo(info.code));
-
-    dispatch(ClassesAction.setClassInfo(newCourseDetail.data));
+    try {
+      setErrors([]);
+      const file = e.target.files[0];
+      const formData = new FormData();
+      formData.append("csvFile", file);
+      formData.append("courseId", info._id);
+      formData.append("gradeComponentId", item._id);
+      e.target.value = null;
+      const result = await http.put("/api/grade/upload-grades", formData);
+      setErrors(result.data.errors);
+      if (result.data.errors.length > 0) {
+        setOpenErrs(true);
+      }
+      const newCourseDetail = await http.get(endpoints.getClassInfo(info.code));
+      dispatch(GlobalActions.setSnackbarSuccess("Upload grade success"));
+      dispatch(ClassesAction.setClassInfo(newCourseDetail.data));
+    } catch (err) {
+      console.log(err);
+      dispatch(GlobalActions.setSnackbarError("Error occured"));
+    }
   };
 
   return (
     <>
+      <Dialog onClose={handleCloseErrs} open={openErrs}>
+        <DialogTitle>Error rows</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            <ul>
+              {errors.map(function (error, index) {
+                return <li key={index}>{error}</li>;
+              })}
+            </ul>
+          </DialogContentText>
+        </DialogContent>
+      </Dialog>
       <TableCell style={{ minWidth: 175 }}>
         <Box className="df jcsb aic">
           <Box className="df fdc">
@@ -223,7 +252,7 @@ const HeadItem = ({ item, setLoading }) => {
         ref={inputRef}
         onChange={upload}
         type="file"
-        accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+        accept=".csv"
       />
       {open && (
         <Menu
