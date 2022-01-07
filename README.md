@@ -1,6 +1,6 @@
-# hcmus-course-frontend
+# quiccourse-frontend
 
-Front end of hcmus-course
+Front end of quicccourse
 
 ## Available Scripts
 
@@ -14,6 +14,3 @@ In the project directory, you can run:
 
 few cover images will failed to load due to last build clean up,
 you can upload new one to see the result
-
-Hosted on: https://hcmus-course-frontend.vercel.app/ <br/>
-Github: https://github.com/congminh090800/hcmus-course-frontend <br/>
