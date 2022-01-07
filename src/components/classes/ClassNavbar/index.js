@@ -4,7 +4,7 @@ import {
   IconButton,
   Toolbar,
   Typography,
-  Popover
+  Popover,
 } from "@material-ui/core";
 import { Box } from "@material-ui/system";
 import { Menu } from "@mui/icons-material";
@@ -15,9 +15,9 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import AvatarPopup from "../../common/NavBar/AvatarPopup";
 import "./index.scss";
-import Badge from '@mui/material/Badge';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import { Paper } from '@mui/material'
+import Badge from "@mui/material/Badge";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import { Paper } from "@mui/material";
 import NotificationItem from "./NotificationItem";
 
 const ClassNavbar = () => {
@@ -37,7 +37,7 @@ const ClassNavbar = () => {
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popper' : undefined;
+  const id = open ? "simple-popper" : undefined;
 
   return (
     <Box>
@@ -58,8 +58,7 @@ const ClassNavbar = () => {
               component="div"
               sx={{ flexGrow: 1, cursor: "pointer" }}
             >
-              <Logo className="app-bar-logo" alt="Google" />
-              <span>&nbsp;Classroom</span>
+              <span>Quiccourse</span>
             </Typography>
           </Box>
           <Box
@@ -71,10 +70,11 @@ const ClassNavbar = () => {
           >
             <Box>
               <Button
-                className={`nav-button ${location.pathname.split("/").pop() == info?.code
-                  ? "active"
-                  : ""
-                  }`}
+                className={`nav-button ${
+                  location.pathname.split("/").pop() == info?.code
+                    ? "active"
+                    : ""
+                }`}
                 component={Link}
                 to={`/classes/${info?.code}`}
               >
@@ -83,10 +83,11 @@ const ClassNavbar = () => {
             </Box>
             <Box>
               <Button
-                className={`nav-button ${location.pathname.split("/").pop() == "classwork"
-                  ? "active"
-                  : ""
-                  }`}
+                className={`nav-button ${
+                  location.pathname.split("/").pop() == "classwork"
+                    ? "active"
+                    : ""
+                }`}
                 component={Link}
                 to={`/classes/${info?.code}/classwork`}
               >
@@ -95,8 +96,9 @@ const ClassNavbar = () => {
             </Box>
             <Box>
               <Button
-                className={`nav-button ${location.pathname.split("/").pop() == "member" ? "active" : ""
-                  }`}
+                className={`nav-button ${
+                  location.pathname.split("/").pop() == "member" ? "active" : ""
+                }`}
                 component={Link}
                 to={`/classes/${info?.code}/member`}
               >
@@ -105,8 +107,9 @@ const ClassNavbar = () => {
             </Box>
             <Box>
               <Button
-                className={`nav-button ${location.pathname.split("/").pop() == "grades" ? "active" : ""
-                  }`}
+                className={`nav-button ${
+                  location.pathname.split("/").pop() == "grades" ? "active" : ""
+                }`}
                 component={Link}
                 to={`/classes/${info?.code}/grades`}
               >
@@ -116,12 +119,19 @@ const ClassNavbar = () => {
           </Box>
           <Box>
             <Button onClick={handleClick}>
-              <Badge badgeContent={user.notifications.filter(e => !e.seen).length} color="primary" style={{ margin: 16 }} >
+              <Badge
+                badgeContent={user.notifications.filter((e) => !e.seen).length}
+                color="primary"
+                style={{ margin: 16 }}
+              >
                 <NotificationsIcon color="action" />
               </Badge>
             </Button>
-            <Popover id={id} open={open} anchorEl={anchorEl}
-              PaperProps={{ style: { maxHeight: '300px', overflowY: 'auto' } }}
+            <Popover
+              id={id}
+              open={open}
+              anchorEl={anchorEl}
+              PaperProps={{ style: { maxHeight: "300px", overflowY: "auto" } }}
               disableScrollLock
               onClose={handleClose}
               anchorOrigin={{
@@ -131,9 +141,20 @@ const ClassNavbar = () => {
               transformOrigin={{
                 vertical: "top",
                 horizontal: "right",
-              }}>
-              <Paper sx={{ border: 1, borderColor: '#F6F6F6', bgcolor: 'background.paper' }}>
-                {[...(user.notifications || [])].reverse().map((notification) => <NotificationItem notification={notification} />)}
+              }}
+            >
+              <Paper
+                sx={{
+                  border: 1,
+                  borderColor: "#F6F6F6",
+                  bgcolor: "background.paper",
+                }}
+              >
+                {[...(user.notifications || [])]
+                  .reverse()
+                  .map((notification) => (
+                    <NotificationItem notification={notification} />
+                  ))}
               </Paper>
             </Popover>
             <AvatarPopup user={user} />
